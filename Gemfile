@@ -32,6 +32,10 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
+# Authentication and authorization, tokens
+gem "devise"
+gem "devise_token_auth"
+
 # Use Active Storage variants
 # gem "image_processing", "~> 1.2"
 
