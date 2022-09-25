@@ -7,7 +7,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    env_file:
+    env_file: 
       - ".env"
   rails:
     build:
@@ -24,7 +24,7 @@ services:
     command: rails server -p 3000 -b '0.0.0.0'
     depends_on:
       - db
-    env_file:
+    env_file: 
       - ".env"
 
 volumes:
