@@ -33,8 +33,12 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
 
 # Authentication and authorization, tokens
-gem "devise"
-gem "devise_token_auth"
+gem 'devise'
+gem 'devise_token_auth'
+
+# Easy JSON validations in models
+gem 'activerecord_json_validator', '~> 2.1.1'
+gem 'json-schema'
 
 # Use Active Storage variants
 # gem "image_processing", "~> 1.2"
