@@ -23,6 +23,17 @@ RSpec.describe Job::Offer, type: :model do
 
     describe 'seniority' do
       it { is_expected.to validate_presence_of(:seniority) }
+      it { is_expected.to validate_numericality_of(:seniority) }
+
+      it {
+        is_expected.to validate_numericality_of(:seniority)
+          .is_greater_than_or_equal_to(1)
+      }
+
+      it {
+        is_expected.to validate_numericality_of(:seniority)
+          .is_less_than_or_equal_to(4)
+      }
     end
 
     describe 'body' do
@@ -39,6 +50,17 @@ RSpec.describe Job::Offer, type: :model do
 
     describe 'remote' do
       it { is_expected.to validate_presence_of(:remote) }
+      it { is_expected.to validate_numericality_of(:remote) }
+
+      it {
+        is_expected.to validate_numericality_of(:remote)
+          .is_greater_than_or_equal_to(1)
+      }
+
+      it {
+        is_expected.to validate_numericality_of(:remote)
+          .is_less_than_or_equal_to(5)
+      }
     end
 
     describe 'hybrid' do

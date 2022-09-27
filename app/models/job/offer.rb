@@ -3,11 +3,19 @@
 module Job
   class Offer < ApplicationRecord
     validates :title, presence: true
-    validates :seniority, presence: true, numericality: { only_integer: true, in: 1..4 }
+    validates :seniority, presence: true, numericality: {
+      only_integer: true,
+      greater_than_or_equal_to: 1,
+      less_than_or_equal_to: 4
+    }
     validates :body, presence: true
     validates :valid_until, presence: true
     validates :status, presence: true
-    validates :remote, presence: true, numericality: { only_integer: true, in: 1..5 }
+    validates :remote, presence: true, numericality: {
+      only_integer: true,
+      greater_than_or_equal_to: 1,
+      less_than_or_equal_to: 5
+    }
     validates :hybrid, presence: true, inclusion: [true, false]
     validates :interview_online, presence: true, inclusion: [true, false]
     validate :valid_until_cannot_be_in_past
