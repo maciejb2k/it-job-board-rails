@@ -8,11 +8,26 @@ RSpec.describe Job::Company, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_presence_of(:logo) }
-    it { is_expected.to validate_presence_of(:size) }
-    it { is_expected.to validate_numericality_of(:size) }
-    it { is_expected.to validate_numericality_of(:size).is_greater_than_or_equal_to(0) }
-    it { is_expected.to validate_presence_of(:data) }
+    describe 'name' do
+      it { is_expected.to validate_presence_of(:name) }
+    end
+
+    describe 'logo' do
+      it { is_expected.to validate_presence_of(:logo) }
+    end
+
+    describe 'size' do
+      it { is_expected.to validate_presence_of(:size) }
+      it { is_expected.to validate_numericality_of(:size) }
+
+      it {
+        is_expected.to validate_numericality_of(:size)
+          .is_greater_than_or_equal_to(0)
+      }
+    end
+
+    describe 'data' do
+      it { is_expected.to validate_presence_of(:data) }
+    end
   end
 end

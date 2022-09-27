@@ -8,10 +8,23 @@ RSpec.describe Job::Contact, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:first_name) }
-    it { is_expected.to validate_presence_of(:last_name) }
-    it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_numericality_of(:phone) }
-    it { is_expected.to validate_numericality_of(:phone).only_integer }
+    describe 'first_name' do
+      it { is_expected.to validate_presence_of(:first_name) }
+    end
+
+    describe 'last_name' do
+      it { is_expected.to validate_presence_of(:last_name) }
+    end
+
+    describe 'email' do
+      it { is_expected.to validate_presence_of(:email) }
+      it { is_expected.not_to allow_value('invalid.test.com').for(:email) }
+      it { is_expected.to allow_value('test@test').for(:email) }
+    end
+
+    describe 'phone' do
+      it { is_expected.to validate_numericality_of(:phone) }
+      it { is_expected.to validate_numericality_of(:phone).only_integer }
+    end
   end
 end

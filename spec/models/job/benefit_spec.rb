@@ -8,7 +8,12 @@ RSpec.describe Job::Benefit, type: :model do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:group) }
-    it { is_expected.to validate_presence_of(:name) }
+    describe 'group' do
+      it { is_expected.to validate_presence_of(:group) }
+    end
+
+    describe 'name' do
+      it { is_expected.to validate_presence_of(:name) }
+    end
   end
 end

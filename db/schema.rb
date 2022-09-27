@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_26_120101) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_27_190803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "job_benefits", force: :cascade do |t|
     t.string "group", null: false
@@ -95,7 +101,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_120101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.bigint "category_id", null: false
+    t.bigint "technology_id", null: false
+    t.index ["category_id"], name: "index_job_offers_on_category_id"
     t.index ["data"], name: "index_job_offers_on_data", using: :gin
+    t.index ["technology_id"], name: "index_job_offers_on_technology_id"
     t.index ["user_id"], name: "index_job_offers_on_user_id"
   end
 
@@ -107,6 +117,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_120101) do
     t.datetime "updated_at", null: false
     t.bigint "job_offer_id", null: false
     t.index ["job_offer_id"], name: "index_job_skills_on_job_offer_id"
+  end
+
+  create_table "technologies", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -139,6 +155,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_26_120101) do
   add_foreign_key "job_contracts", "job_offers"
   add_foreign_key "job_languages", "job_offers"
   add_foreign_key "job_locations", "job_offers"
+  add_foreign_key "job_offers", "categories"
+  add_foreign_key "job_offers", "technologies"
   add_foreign_key "job_offers", "users"
   add_foreign_key "job_skills", "job_offers"
 end

@@ -23,3 +23,6 @@ Lint/AmbiguousBlockAssociation:
 
 Style/Documentation:
   Enabled: false
+
+RSpec/ImplicitSubject:
+  Enabled: false

@@ -5,8 +5,9 @@ module Job
     validates :name, presence: true
     validates :level, presence: true,
                       numericality: {
-                        is_integer: true,
-                        in: 1..5
+                        only_integer: true,
+                        greater_than_or_equal_to: 1,
+                        less_than_or_equal_to: 5
                       }
 
     belongs_to :job_offer, class_name: 'Job::Offer'

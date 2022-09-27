@@ -33,8 +33,11 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
 
 # Authentication and authorization, tokens
-gem 'devise'
-gem 'devise_token_auth'
+gem 'devise', '~> 4.8.1'
+gem 'devise_token_auth', '~> 1.2.1'
+
+# JSON schema validation
+gem 'json-schema', '~> 2.8.1'
 
 # Easy JSON validations in models
 gem 'activerecord_json_validator', '~> 2.1.1'
@@ -64,8 +67,4 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-end
-
-group :test do
-  gem 'json-schema-rspec'
 end
