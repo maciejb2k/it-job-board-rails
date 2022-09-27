@@ -18,6 +18,6 @@ module Job
                    format: { with: /\A\d{1,6}(\.\d{1,2})?\z/ }
     validates :currency, presence: true
 
-    belongs_to :job_offer
+    belongs_to :job_offer, class_name: 'Job::Offer'
   end
 end

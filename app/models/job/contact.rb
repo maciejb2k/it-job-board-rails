@@ -7,6 +7,6 @@ module Job
     validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
     validates :phone, numericality: { only_integer: true }
 
-    belongs_to :job_offer
+    belongs_to :job_offer, class_name: 'Job::Offer'
   end
 end

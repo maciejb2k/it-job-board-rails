@@ -9,6 +9,6 @@ module Job
     validates :country, presence: true
     validates :country_code, presence: true
 
-    belongs_to :job_offer
+    belongs_to :job_offer, class_name: 'Job::Offer'
   end
 end

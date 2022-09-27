@@ -38,7 +38,6 @@ gem 'devise_token_auth'
 
 # Easy JSON validations in models
 gem 'activerecord_json_validator', '~> 2.1.1'
-gem 'json-schema'
 
 # Use Active Storage variants
 # gem "image_processing", "~> 1.2"
@@ -65,4 +64,8 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+end
+
+group :test do
+  gem 'json-schema-rspec'
 end
