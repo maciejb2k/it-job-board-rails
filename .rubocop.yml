@@ -23,3 +23,9 @@ Lint/AmbiguousBlockAssociation:
 
 Style/Documentation:
   Enabled: false
+
+RSpec/ImplicitSubject:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
