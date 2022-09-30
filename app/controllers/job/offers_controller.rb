@@ -7,7 +7,7 @@ module Job
     def create
       @form = OfferForm.new(offer_params)
       if @form.save
-        render json: @form, status: :ok
+        render json: OfferSerializer.new(@form.offer).to_h, status: :ok
       else
         render json: { errors: @form.errors.messages }, status: :unprocessable_entity
       end
@@ -22,9 +22,8 @@ module Job
                       seniority
                       body
                       valid_until
-                      status
+                      is_active
                       remote
-                      hybrid
                       interview_online
                       category_id
                       technology_id
@@ -40,7 +39,7 @@ module Job
                       name
                     ],
                     contracts_attributes: %i[
-                      type
+                      employment
                       hide_salary
                       from
                       to
@@ -69,6 +68,7 @@ module Job
                     languages_attributes: %i[
                       name
                       code
+                      proficiency
                     ])
     end
 

@@ -2,6 +2,8 @@
 
 module Job
   class Offer < ApplicationRecord
+    DATA_SCHEMA = Rails.root.join('config/schemas/job/offer/data.json')
+
     validates :title, presence: true
     validates :seniority, presence: true,
                           numericality: {
@@ -11,15 +13,16 @@ module Job
                           }
     validates :body, presence: true
     validates :valid_until, presence: true
-    validates :status, presence: true
     validates :remote, presence: true,
                        numericality: {
                          only_integer: true,
-                         greater_than_or_equal_to: 1,
+                         greater_than_or_equal_to: 0,
                          less_than_or_equal_to: 5
                        }
-    validates :hybrid, inclusion: [true, false]
-    validates :interview_online, inclusion: [true, false]
+    validates :data, json: {
+      message: ->(errors) { errors },
+      schema: DATA_SCHEMA
+    }
     validate :valid_until_cannot_be_in_past
 
     has_many :job_skills, dependent: :destroy, class_name: 'Job::Skill',
@@ -40,22 +43,6 @@ module Job
     belongs_to :category
     belongs_to :technology
     belongs_to :user
-
-    accepts_nested_attributes_for :job_skills,
-                                  :job_benefits,
-                                  :job_contracts,
-                                  :job_locations,
-                                  :job_companies,
-                                  :job_contacts,
-                                  :job_languages
-
-    validates_associated :job_skills,
-                         :job_benefits,
-                         :job_contracts,
-                         :job_locations,
-                         :job_companies,
-                         :job_contacts,
-                         :job_languages
 
     private
 

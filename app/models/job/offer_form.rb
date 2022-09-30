@@ -27,9 +27,11 @@ module Job
               :contacts_attributes,
               :contracts_attributes,
               :locations_attributes,
-              :company_attributes,
               :languages_attributes,
-              array: true
+              is_array: true
+    validates :offers_attributes,
+              :company_attributes,
+              is_hash: true
 
     def save
       return false unless valid?
@@ -37,11 +39,12 @@ module Job
       ActiveRecord::Base.transaction do
         create_offer
         create_skills
-        # create_benefits
-        # create_contracts
-        # create_locations
-        # create_company
-        # create_contacts
+        create_benefits
+        create_contracts
+        create_locations
+        create_company
+        create_contacts
+        create_languages
 
         true
       end

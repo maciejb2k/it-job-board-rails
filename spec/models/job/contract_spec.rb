@@ -8,13 +8,13 @@ RSpec.describe Job::Contract, type: :model do
   end
 
   describe 'validations' do
-    describe 'type' do
-      it { is_expected.to validate_presence_of(:type) }
-    end
+    describe 'employment' do
+      it { is_expected.to validate_presence_of(:employment) }
 
-    describe 'hide_salary' do
-      it { is_expected.to validate_presence_of(:hide_salary) }
-      it { is_expected.to allow_value(%w[true false]).for(:hide_salary) }
+      it {
+        is_expected.to validate_inclusion_of(:employment)
+          .in_array(%w[b2b uop mandatory])
+      }
     end
 
     describe 'from' do
@@ -23,10 +23,6 @@ RSpec.describe Job::Contract, type: :model do
       it {
         is_expected.to validate_numericality_of(:from)
           .is_greater_than_or_equal_to(0)
-      }
-
-      it {
-        is_expected.to validate_numericality_of(:from)
           .is_less_than(BigDecimal(10**6))
       }
     end
@@ -37,10 +33,6 @@ RSpec.describe Job::Contract, type: :model do
       it {
         is_expected.to validate_numericality_of(:to)
           .is_greater_than_or_equal_to(0)
-      }
-
-      it {
-        is_expected.to validate_numericality_of(:to)
           .is_less_than(BigDecimal(10**6))
       }
     end

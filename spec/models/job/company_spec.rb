@@ -18,16 +18,12 @@ RSpec.describe Job::Company, type: :model do
 
     describe 'size' do
       it { is_expected.to validate_presence_of(:size) }
-      it { is_expected.to validate_numericality_of(:size) }
 
       it {
         is_expected.to validate_numericality_of(:size)
           .is_greater_than_or_equal_to(0)
+          .only_integer
       }
-    end
-
-    describe 'data' do
-      it { is_expected.to validate_presence_of(:data) }
     end
   end
 end

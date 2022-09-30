@@ -10,7 +10,7 @@ module Job
       greater_than_or_equal_to: 0,
       only_integer: true
     }
-    validates :data, presence: true, json: {
+    validates :data, json: {
       message: ->(errors) { errors },
       schema: DATA_SCHEMA
     }

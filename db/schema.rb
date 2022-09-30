@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_27_190803) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_30_092853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_27_190803) do
   end
 
   create_table "job_contracts", force: :cascade do |t|
-    t.string "type", null: false
+    t.string "employment", null: false
     t.boolean "hide_salary", default: false, null: false
     t.decimal "from", precision: 8, scale: 2, null: false
     t.decimal "to", precision: 8, scale: 2, null: false
@@ -92,10 +92,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_27_190803) do
     t.integer "seniority", null: false
     t.text "body", default: "", null: false
     t.datetime "valid_until", precision: nil, null: false
-    t.string "status", null: false
     t.string "rodo"
     t.integer "remote", default: 0, null: false
-    t.boolean "hybrid", default: false, null: false
     t.boolean "interview_online", default: true, null: false
     t.jsonb "data", default: {}, null: false
     t.datetime "created_at", null: false
@@ -103,6 +101,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_27_190803) do
     t.bigint "user_id", null: false
     t.bigint "category_id", null: false
     t.bigint "technology_id", null: false
+    t.boolean "is_active", default: true, null: false
     t.index ["category_id"], name: "index_job_offers_on_category_id"
     t.index ["data"], name: "index_job_offers_on_data", using: :gin
     t.index ["technology_id"], name: "index_job_offers_on_technology_id"

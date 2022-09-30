@@ -2,8 +2,12 @@
 
 module Job
   class Contract < ApplicationRecord
-    validates :type, presence: true
-    validates :hide_salary, presence: true, inclusion: [true, false]
+    CONTRACT_TYPES = %w[b2b uop mandatory].freeze
+
+    validates :employment, presence: true,
+                           inclusion: {
+                             in: :contract_types
+                           }
     validates :from, presence: true,
                      numericality: {
                        greater_than_or_equal_to: 0,
@@ -19,5 +23,9 @@ module Job
     validates :currency, presence: true
 
     belongs_to :job_offer, class_name: 'Job::Offer'
+
+    def contract_types
+      CONTRACT_TYPES
+    end
   end
 end
