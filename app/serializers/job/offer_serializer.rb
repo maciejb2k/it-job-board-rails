@@ -4,6 +4,8 @@ module Job
   class OfferSerializer < ActiveModel::Serializer
     attributes :id,
                :title,
+               :slug,
+               :uuid,
                :seniority,
                :body,
                :valid_until,
@@ -11,6 +13,8 @@ module Job
                :remote,
                :rodo,
                :interview_online,
+               :ua_supported,
+               :travelling,
                :category,
                :technology,
                :user
@@ -22,6 +26,7 @@ module Job
     attribute :job_companies, key: :company
     attribute :job_contacts, key: :contacts
     attribute :job_languages, key: :languages
+    attribute :job_equipment, key: :equipment
 
     def rodo
       object.rodo || ''

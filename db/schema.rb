@@ -10,9 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_30_092853) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_01_194636) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
@@ -61,7 +63,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_30_092853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "job_offer_id", null: false
+    t.boolean "paid_vacation", default: false, null: false
+    t.string "payment_period", null: false
     t.index ["job_offer_id"], name: "index_job_contracts_on_job_offer_id"
+  end
+
+  create_table "job_equipment", force: :cascade do |t|
+    t.string "computer", null: false
+    t.integer "monitor", default: 1, null: false
+    t.boolean "linux", default: false, null: false
+    t.boolean "mac_os", default: false, null: false
+    t.boolean "windows", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "job_offer_id", null: false
+    t.index ["job_offer_id"], name: "index_job_equipment_on_job_offer_id"
   end
 
   create_table "job_languages", force: :cascade do |t|
@@ -71,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_30_092853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "job_offer_id", null: false
+    t.boolean "required", default: false, null: false
     t.index ["job_offer_id"], name: "index_job_languages_on_job_offer_id"
   end
 
@@ -102,6 +119,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_30_092853) do
     t.bigint "category_id", null: false
     t.bigint "technology_id", null: false
     t.boolean "is_active", default: true, null: false
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
+    t.string "slug", null: false
+    t.string "travelling", null: false
+    t.boolean "ua_supported", default: false, null: false
     t.index ["category_id"], name: "index_job_offers_on_category_id"
     t.index ["data"], name: "index_job_offers_on_data", using: :gin
     t.index ["technology_id"], name: "index_job_offers_on_technology_id"
@@ -152,6 +173,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_30_092853) do
   add_foreign_key "job_companies", "job_offers"
   add_foreign_key "job_contacts", "job_offers"
   add_foreign_key "job_contracts", "job_offers"
+  add_foreign_key "job_equipment", "job_offers"
   add_foreign_key "job_languages", "job_offers"
   add_foreign_key "job_locations", "job_offers"
   add_foreign_key "job_offers", "categories"

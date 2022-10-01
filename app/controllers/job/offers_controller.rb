@@ -48,10 +48,13 @@ module Job
                     :valid_until,
                     :is_active,
                     :remote,
+                    :travelling,
+                    :ua_supported,
                     :interview_online,
                     :category_id,
                     :technology_id,
                     :user_id,
+                    :data,
                     job_skills_attributes: %i[
                       id
                       name
@@ -70,6 +73,8 @@ module Job
                       from
                       to
                       currency
+                      payment_period
+                      paid_vacation
                     ],
                     job_locations_attributes: %i[
                       id
@@ -98,6 +103,15 @@ module Job
                       name
                       code
                       proficiency
+                      required
+                    ],
+                    job_equipment_attributes: %i[
+                      id
+                      computer
+                      monitor
+                      linux
+                      mac_os
+                      windows
                     ])
     end
 
