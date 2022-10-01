@@ -2,7 +2,7 @@
 
 module Job
   class Contract < ApplicationRecord
-    CONTRACT_TYPES = %w[b2b uop mandatory].freeze
+    CONTRACT_TYPES = %w[b2b uop contract mandatory].freeze
 
     validates :employment, presence: true,
                            inclusion: {

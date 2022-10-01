@@ -2,14 +2,39 @@
 
 module Job
   class OffersController < ApplicationController
-    before_action :set_offer, except: %i[create]
+    before_action :set_offer, except: %i[index create]
+
+    def index
+      render json: { data: ActiveModel::SerializableResource.new(Offer.all,
+                                                                 each_serializer: OfferSerializer) }
+    end
+
+    def show
+      render json: OfferSerializer.new(@offer).to_h
+    end
 
     def create
-      @form = OfferForm.new(offer_params)
-      if @form.save
-        render json: OfferSerializer.new(@form.offer).to_h, status: :ok
+      @offer = Offer.new(offer_params)
+      if @offer.save
+        render json: OfferSerializer.new(@offer).to_h, status: :created
       else
-        render json: { errors: @form.errors.messages }, status: :unprocessable_entity
+        render json: { errors: @offer.errors.messages }, status: :unprocessable_entity
+      end
+    end
+
+    def update
+      if @offer.update(offer_params)
+        render json: @offer
+      else
+        render json: { errors: @offer.errors.messages }, status: :unprocessable_entity
+      end
+    end
+
+    def destroy
+      if @offer.destroy
+        render json: @offer
+      else
+        render json: { errors: @offer.errors.to_s }, status: :unprocessable_entity
       end
     end
 
@@ -17,35 +42,37 @@ module Job
 
     def offer_params
       params.require(:offer)
-            .permit(offers_attributes: %i[
-                      title
-                      seniority
-                      body
-                      valid_until
-                      is_active
-                      remote
-                      interview_online
-                      category_id
-                      technology_id
-                      user_id
-                    ],
-                    skills_attributes: %i[
+            .permit(:title,
+                    :seniority,
+                    :body,
+                    :valid_until,
+                    :is_active,
+                    :remote,
+                    :interview_online,
+                    :category_id,
+                    :technology_id,
+                    :user_id,
+                    job_skills_attributes: %i[
+                      id
                       name
                       level
                       optional
                     ],
-                    benefits_attributes: %i[
+                    job_benefits_attributes: %i[
+                      id
                       group
                       name
                     ],
-                    contracts_attributes: %i[
+                    job_contracts_attributes: %i[
+                      id
                       employment
                       hide_salary
                       from
                       to
                       currency
                     ],
-                    locations_attributes: %i[
+                    job_locations_attributes: %i[
+                      id
                       city
                       street
                       building_number
@@ -53,19 +80,21 @@ module Job
                       country
                       country_code
                     ],
-                    company_attributes: %i[
+                    job_companies_attributes: %i[
                       name
                       logo
                       size
                       data
                     ],
-                    contacts_attributes: %i[
+                    job_contacts_attributes: %i[
+                      id
                       first_name
                       last_name
                       email
                       phone
                     ],
-                    languages_attributes: %i[
+                    job_languages_attributes: %i[
+                      id
                       name
                       code
                       proficiency

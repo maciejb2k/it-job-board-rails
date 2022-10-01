@@ -33,16 +33,39 @@ module Job
                              foreign_key: 'job_offer_id', inverse_of: :job_offer
     has_many :job_locations, dependent: :destroy, class_name: 'Job::Location',
                              foreign_key: 'job_offer_id', inverse_of: :job_offer
-    has_many :job_companies, dependent: :destroy, class_name: 'Job::Company',
-                             foreign_key: 'job_offer_id', inverse_of: :job_offer
     has_many :job_contacts, dependent: :destroy, class_name: 'Job::Contact',
                             foreign_key: 'job_offer_id', inverse_of: :job_offer
     has_many :job_languages, dependent: :destroy, class_name: 'Job::Language',
                              foreign_key: 'job_offer_id', inverse_of: :job_offer
+    has_one :job_companies, dependent: :destroy, class_name: 'Job::Company',
+                            foreign_key: 'job_offer_id', inverse_of: :job_offer
 
     belongs_to :category
     belongs_to :technology
     belongs_to :user
+
+    validates :job_skills,
+              :job_contracts,
+              :job_locations,
+              :job_companies,
+              :job_languages, presence: true
+
+    accepts_nested_attributes_for :job_companies
+
+    accepts_nested_attributes_for :job_skills,
+                                  :job_benefits,
+                                  :job_contracts,
+                                  :job_locations,
+                                  :job_contacts,
+                                  :job_languages, allow_destroy: true
+
+    validates_associated :job_skills,
+                         :job_benefits,
+                         :job_contracts,
+                         :job_locations,
+                         :job_companies,
+                         :job_contacts,
+                         :job_languages
 
     private
 
