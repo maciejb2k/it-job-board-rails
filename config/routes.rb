@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
+  namespace :auth do
+    mount_devise_token_auth_for 'Employer', at: 'employer'
+  end
 
   namespace :job do
     resources :offers

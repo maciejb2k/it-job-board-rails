@@ -1,6 +1,6 @@
 class CreateJobOffers < ActiveRecord::Migration[7.0]
   def change
-    create_table :job_offers do |t|
+    create_table :job_offers, id: :uuid do |t|
       t.string :title, null: false
       t.integer :seniority, null: false
       t.text :body, null: false, default: ''
@@ -18,7 +18,7 @@ class CreateJobOffers < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_reference :job_offers, :user, index: true, null: false, foreign_key: true
+    add_reference :job_offers, :user, index: true, null: false, foreign_key: true, type: :uuid
     add_index :job_offers, :data, using: :gin
   end
 end

@@ -2,7 +2,7 @@
 
 module Job
   class Contract < ApplicationRecord
-    CONTRACT_TYPES = %w[b2b uop mandatory].freeze
+    CONTRACT_TYPES = %w[b2b uop contract mandatory].freeze
 
     validates :employment, presence: true,
                            inclusion: {
@@ -21,6 +21,14 @@ module Job
                    },
                    format: { with: /\A\d{1,6}(\.\d{1,2})?\z/ }
     validates :currency, presence: true
+    validates :payment_period, presence: true
+
+    enum payment_period: {
+      hourly: 'hourly',
+      daily: 'daily',
+      monthly: 'monthly',
+      yearly: 'yearly'
+    }, _suffix: true, _default: 'monthly'
 
     belongs_to :job_offer, class_name: 'Job::Offer'
 

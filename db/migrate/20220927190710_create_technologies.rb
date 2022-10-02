@@ -1,6 +1,6 @@
 class CreateTechnologies < ActiveRecord::Migration[7.0]
   def change
-    create_table :technologies do |t|
+    create_table :technologies, id: :uuid do |t|
       t.string :name, null: false
       
       t.timestamps

@@ -29,3 +29,6 @@ RSpec/ImplicitSubject:
 
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
