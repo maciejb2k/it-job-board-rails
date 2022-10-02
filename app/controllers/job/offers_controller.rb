@@ -53,7 +53,7 @@ module Job
                     :interview_online,
                     :category_id,
                     :technology_id,
-                    :user_id,
+                    :employer_id,
                     :data,
                     job_skills_attributes: %i[
                       id

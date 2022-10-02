@@ -47,7 +47,7 @@ module Job
 
     belongs_to :category
     belongs_to :technology
-    belongs_to :user
+    belongs_to :employer
 
     validates :job_skills,
               :job_contracts,

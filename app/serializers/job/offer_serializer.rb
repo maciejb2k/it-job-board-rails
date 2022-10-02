@@ -5,7 +5,6 @@ module Job
     attributes :id,
                :title,
                :slug,
-               :uuid,
                :seniority,
                :body,
                :valid_until,
@@ -17,7 +16,7 @@ module Job
                :travelling,
                :category,
                :technology,
-               :user
+               :employer
 
     attribute :job_skills, key: :skills
     attribute :job_benefits, key: :benefits

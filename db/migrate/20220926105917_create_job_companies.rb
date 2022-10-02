@@ -1,6 +1,6 @@
 class CreateJobCompanies < ActiveRecord::Migration[7.0]
   def change
-    create_table :job_companies do |t|
+    create_table :job_companies, id: :uuid do |t|
       t.string :name, null: false
       t.string :logo, null: false
       t.integer :size, null: false, default: 0
@@ -9,7 +9,7 @@ class CreateJobCompanies < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_reference :job_companies, :job_offer, index: true, null: false, foreign_key: true
+    add_reference :job_companies, :job_offer, index: true, null: false, foreign_key: true, type: :uuid
     add_index :job_companies, :data, using: :gin
   end
 end

@@ -1,7 +1,6 @@
 class AddFeaturesToJobOffers < ActiveRecord::Migration[7.0]
   def change
     # :job_offers
-    add_column :job_offers, :uuid, :uuid, null: false, default: "uuid_generate_v4()"
     add_column :job_offers, :slug, :string, null:false
     add_column :job_offers, :travelling, :string, null: false
     add_column :job_offers, :ua_supported, :boolean, null: false, default: false
