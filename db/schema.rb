@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_02_084310) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_03_183019) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -92,6 +92,30 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_02_084310) do
     t.index ["email"], name: "index_employers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_employers_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_employers_on_uid_and_provider", unique: true
+  end
+
+  create_table "job_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "full_name", null: false
+    t.string "last_name", null: false
+    t.string "email", null: false
+    t.string "phone"
+    t.string "cv", null: false
+    t.jsonb "data", default: {}
+    t.string "note"
+    t.string "work_form", null: false
+    t.string "city", null: false
+    t.string "contract", null: false
+    t.string "start_time", null: false
+    t.string "working_hours", null: false
+    t.boolean "starred", default: false, null: false
+    t.string "status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "job_offer_id", null: false
+    t.uuid "candidate_id"
+    t.index ["candidate_id"], name: "index_job_applications_on_candidate_id"
+    t.index ["data"], name: "index_job_applications_on_data", using: :gin
+    t.index ["job_offer_id"], name: "index_job_applications_on_job_offer_id"
   end
 
   create_table "job_benefits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,6 +218,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_02_084310) do
     t.string "travelling", null: false
     t.boolean "ua_supported", default: false, null: false
     t.uuid "employer_id", null: false
+    t.string "external_link"
     t.index ["category_id"], name: "index_job_offers_on_category_id"
     t.index ["data"], name: "index_job_offers_on_data", using: :gin
     t.index ["employer_id"], name: "index_job_offers_on_employer_id"
@@ -216,6 +241,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_02_084310) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "job_applications", "candidates"
+  add_foreign_key "job_applications", "job_offers"
   add_foreign_key "job_benefits", "job_offers"
   add_foreign_key "job_companies", "job_offers"
   add_foreign_key "job_contacts", "job_offers"
