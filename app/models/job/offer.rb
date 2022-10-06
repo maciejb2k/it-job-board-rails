@@ -13,32 +13,31 @@ class Job::Offer < ApplicationRecord
                         }
   validates :body, presence: true
   validates :valid_until, presence: true
+  validates :travelling, inclusion: { in: :travelling_types, allow_blank: true }
   validates :remote, presence: true,
-                      numericality: {
-                        only_integer: true,
-                        greater_than_or_equal_to: 0,
-                        less_than_or_equal_to: 5
-                      }
+                     numericality: {
+                       only_integer: true,
+                       greater_than_or_equal_to: 0,
+                       less_than_or_equal_to: 5
+                     }
   validates :data, json: {
     message: ->(errors) { errors },
     schema: DATA_SCHEMA
   }
   validate :valid_until_cannot_be_in_past
-  validates :travelling, presence: true,
-                          inclusion: { in: :travelling_types }
 
   has_many :job_skills, dependent: :destroy, class_name: 'Job::Skill',
                         foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_many :job_benefits, dependent: :destroy, class_name: 'Job::Benefit',
                           foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_many :job_contracts, dependent: :destroy, class_name: 'Job::Contract',
-                            foreign_key: 'job_offer_id', inverse_of: :job_offer
+                           foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_many :job_locations, dependent: :destroy, class_name: 'Job::Location',
-                            foreign_key: 'job_offer_id', inverse_of: :job_offer
+                           foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_many :job_contacts, dependent: :destroy, class_name: 'Job::Contact',
                           foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_many :job_languages, dependent: :destroy, class_name: 'Job::Language',
-                            foreign_key: 'job_offer_id', inverse_of: :job_offer
+                           foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_one :job_equipment, dependent: :destroy, class_name: 'Job::Equipment',
                           foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_one :job_companies, dependent: :destroy, class_name: 'Job::Company',
@@ -66,15 +65,20 @@ class Job::Offer < ApplicationRecord
                                 :job_languages, allow_destroy: true
 
   validates_associated :job_skills,
-                        :job_benefits,
-                        :job_contracts,
-                        :job_locations,
-                        :job_companies,
-                        :job_contacts,
-                        :job_languages,
-                        :job_equipment
+                       :job_benefits,
+                       :job_contracts,
+                       :job_locations,
+                       :job_companies,
+                       :job_contacts,
+                       :job_languages,
+                       :job_equipment
+
+  scope :active, ->(*) { where(is_active: true) }
+  scope :by_category, ->(category_ids) { where(category_id: category_ids) }
+  scope :by_technology, ->(technology_ids) { where(technology_id: technology_ids) }
 
   after_validation :set_slug, only: %i[create update]
+  before_create :set_default_values
 
   def to_param
     "#{id}-#{slug}"
@@ -94,5 +98,9 @@ class Job::Offer < ApplicationRecord
 
   def set_slug
     self.slug = title.to_s.parameterize
+  end
+
+  def set_default_values
+    self.travelling = 'none'
   end
 end

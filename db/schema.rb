@@ -95,7 +95,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_03_183019) do
   end
 
   create_table "job_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "full_name", null: false
+    t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "email", null: false
     t.string "phone"

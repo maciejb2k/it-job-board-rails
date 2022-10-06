@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class Api::V1::Employer::OffersController < ApplicationController
+class Api::V1::Employer::Job::OffersController < ApplicationController
   before_action :set_offer, except: %i[index create]
 
   def index
     render json: {
       data: ActiveModel::SerializableResource.new(
         Job::Offer.all,
-        each_serializer: Api::V1::Employer::OfferSerializer
+        each_serializer: Api::V1::Employer::Job::OfferSerializer
       )
     }
   end
@@ -19,7 +19,7 @@ class Api::V1::Employer::OffersController < ApplicationController
   def create
     @offer = Job::Offer.new(offer_params)
     if @offer.save
-      render json: Api::V1::Employer::OfferSerializer.new(@offer).to_h, status: :created
+      render json: Api::V1::Employer::Job::OfferSerializer.new(@offer).to_h, status: :created
     else
       render json: { errors: @offer.errors.messages }, status: :unprocessable_entity
     end

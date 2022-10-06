@@ -11,6 +11,11 @@ Rails.application.routes.draw do
       namespace :employer do
         resources :offers
       end
+
+      namespace :job do
+        resources :applications, only: %i[create]
+        resources :offers, only: %i[index show]
+      end
     end
   end
 end

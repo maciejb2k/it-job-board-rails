@@ -4,21 +4,21 @@ class Job::Contract < ApplicationRecord
   CONTRACT_TYPES = %w[b2b uop contract mandatory].freeze
 
   validates :employment, presence: true,
-                          inclusion: {
-                            in: :contract_types
-                          }
+                         inclusion: {
+                           in: :contract_types
+                         }
   validates :from, presence: true,
-                    numericality: {
-                      greater_than_or_equal_to: 0,
-                      less_than: BigDecimal(10**6)
-                    },
-                    format: { with: /\A\d{1,6}(\.\d{1,2})?\z/ }
+                   numericality: {
+                     greater_than_or_equal_to: 0,
+                     less_than: BigDecimal(10**6)
+                   },
+                   format: { with: /\A\d{1,6}(\.\d{1,2})?\z/ }
   validates :to, presence: true,
-                  numericality: {
-                    greater_than_or_equal_to: 0,
-                    less_than: BigDecimal(10**6)
-                  },
-                  format: { with: /\A\d{1,6}(\.\d{1,2})?\z/ }
+                 numericality: {
+                   greater_than_or_equal_to: 0,
+                   less_than: BigDecimal(10**6)
+                 },
+                 format: { with: /\A\d{1,6}(\.\d{1,2})?\z/ }
   validates :currency, presence: true
   validates :payment_period, presence: true
 

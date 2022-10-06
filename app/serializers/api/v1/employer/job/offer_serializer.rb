@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::Employer::OfferSerializer < ActiveModel::Serializer
+class Api::V1::Employer::Job::OfferSerializer < ActiveModel::Serializer
   attributes :id,
              :title,
              :slug,
