@@ -9,17 +9,55 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
              :is_active,
              :remote,
              :ua_supported,
-             :travelling
+             :travelling,
+             :category,
+             :technology,
+             :skills,
+             :contracts,
+             :languages,
+             :locations
 
-  belongs_to :category
-  belongs_to :technology
-
-  has_many :job_skills, key: :skills do
-    object.job_skills.where(optional: false)
+  def category
+    CategorySerializer.new(object.category).attributes
   end
-  has_many :job_contracts, key: :contracts
-  has_many :job_languages, key: :languages
-  has_many :job_locations, key: :locations
+
+  def technology
+    TechnologySerializer.new(object.technology).attributes
+  end
+
+  def skills
+    object.job_skills.map do |item|
+      Job::SkillSerializer.new(item).attributes
+    end
+  end
+
+  def contracts
+    object.job_contracts.map do |item|
+      Job::ContractSerializer.new(item).attributes
+    end
+  end
+
+  def languages
+    object.job_languages.map do |item|
+      Job::LanguageSerializer.new(item).attributes
+    end
+  end
+
+  def locations
+    object.job_locations.map do |item|
+      Job::LocationSerializer.new(item).attributes
+    end
+  end
+
+  # belongs_to :category
+  # belongs_to :technology
+
+  # has_many :job_skills, key: :skills do
+  #   object.job_skills.where(optional: false)
+  # end
+  # has_many :job_contracts, key: :contracts
+  # has_many :job_languages, key: :languages
+  # has_many :job_locations, key: :locations
 
   # Category
   class CategorySerializer < ActiveModel::Serializer

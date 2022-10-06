@@ -8,7 +8,15 @@ class Api::V1::Job::OffersController < ApplicationController
   has_scope :by_technology, only: :index
 
   def index
-    @offers = apply_scopes(Job::Offer).all
+    @offers = apply_scopes(
+      Job::Offer
+        .includes(
+          :category, :technology, :job_skills,
+          :job_benefits, :job_contracts,
+          :job_locations, :job_contacts, :job_languages,
+          :job_equipment, :job_companies
+        )
+    ).all
     render json: @offers, each_serializer: Api::V1::Job::SimpleOfferSerializer
   end
 

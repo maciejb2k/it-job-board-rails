@@ -35,7 +35,7 @@ Employer.create(email: 'someone@comapny.com', password: 'password')
 
 p "Created employer: #{Employer.first.email}"
 
-100.times do |i|
+1000.times do |i|
   params = {
     "offer": {
       "title": "Senior Ruby Developer",
@@ -155,7 +155,9 @@ p "Created employer: #{Employer.first.email}"
     }
   }
   
+  
   Job::Offer.create!(params[:offer])
+  p "Created ##{i} job offers"
 end
 
 p "Created #{Job::Offer.count} job offers"
