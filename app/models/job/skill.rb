@@ -10,4 +10,6 @@ class Job::Skill < ApplicationRecord
                     }
 
   belongs_to :job_offer, class_name: 'Job::Offer'
+
+  scope :only_required, -> { where(optional: false) }
 end

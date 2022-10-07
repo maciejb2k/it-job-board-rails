@@ -9,6 +9,7 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
              :is_active,
              :remote,
              :ua_supported,
+             :interview_online,
              :travelling,
              :category,
              :technology,
@@ -26,7 +27,7 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
   end
 
   def skills
-    object.job_skills.map do |item|
+    object.job_skills_required.map do |item|
       Job::SkillSerializer.new(item).attributes
     end
   end
@@ -49,16 +50,6 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
     end
   end
 
-  # belongs_to :category
-  # belongs_to :technology
-
-  # has_many :job_skills, key: :skills do
-  #   object.job_skills.where(optional: false)
-  # end
-  # has_many :job_contracts, key: :contracts
-  # has_many :job_languages, key: :languages
-  # has_many :job_locations, key: :locations
-
   # Category
   class CategorySerializer < ActiveModel::Serializer
     attributes :id, :name
@@ -79,11 +70,11 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
     attributes :employment, :from, :to, :currency
 
     def from
-      object.hide_salary ? 'hidden' : object.from
+      object.hide_salary ? 'undisclosed' : object.from
     end
 
     def to
-      object.hide_salary ? 'hidden' : object.to
+      object.hide_salary ? 'undisclosed' : object.to
     end
   end
 

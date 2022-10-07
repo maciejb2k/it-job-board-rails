@@ -73,9 +73,21 @@ class Job::Offer < ApplicationRecord
                        :job_languages,
                        :job_equipment
 
-  scope :active, ->(*) { where(is_active: true) }
+  scope :is_active, ->(*) { where('valid_until > ? AND is_active = ?', Time.zone.now, true) }
+  scope :interview_online, ->(value = true) { where(interview_online: value) }
+  scope :ua_supported, ->(value = false) { where(ua_supported: value) }
   scope :by_category, ->(category_ids) { where(category_id: category_ids) }
   scope :by_technology, ->(technology_ids) { where(technology_id: technology_ids) }
+  scope :by_remote, ->(remote) { where(remote:) }
+  scope :by_seniority, ->(seniority) { where(seniority:) }
+  scope :by_travelling, ->(travelling) { where(travelling:) }
+
+  has_many :job_skills_required,
+           -> { only_required },
+           dependent: :destroy,
+           class_name: 'Job::Skill',
+           foreign_key: 'job_offer_id',
+           inverse_of: :job_offer
 
   after_validation :set_slug, only: %i[create update]
   before_create :set_default_values
