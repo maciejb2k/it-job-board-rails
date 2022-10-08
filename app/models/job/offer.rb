@@ -74,13 +74,31 @@ class Job::Offer < ApplicationRecord
                        :job_equipment
 
   scope :is_active, ->(*) { where('valid_until > ? AND is_active = ?', Time.zone.now, true) }
-  scope :interview_online, ->(value = true) { where(interview_online: value) }
-  scope :ua_supported, ->(value = false) { where(ua_supported: value) }
-  scope :by_category, ->(category_ids) { where(category_id: category_ids) }
-  scope :by_technology, ->(technology_ids) { where(technology_id: technology_ids) }
+  scope :is_interview_online, ->(value = true) { where(interview_online: value) }
+  scope :is_ua_supported, ->(value = false) { where(ua_supported: value) }
+  scope :by_category, ->(title) { where(title:) }
+  scope :by_category, ->(category_id) { where(category_id:) }
+  scope :by_technology, ->(technology_id) { where(technology_id:) }
   scope :by_remote, ->(remote) { where(remote:) }
   scope :by_seniority, ->(seniority) { where(seniority:) }
   scope :by_travelling, ->(travelling) { where(travelling:) }
+  scope :by_city, ->(cities) { joins(:job_locations).where('job_locations.city': cities) }
+  scope :by_currency, lambda { |currency|
+    left_joins(:job_contracts)
+      .where('job_contracts.currency': currency)
+  }
+  scope :by_employment, lambda { |employment|
+    left_joins(:job_contracts)
+      .where('job_contracts.employment': employment)
+  }
+  scope :by_language, lambda { |languages|
+    left_joins(:job_languages)
+      .where('job_languages.name': languages)
+  }
+  scope :by_salary, lambda { |from, to|
+    left_joins(:job_contracts)
+      .where('job_contracts.from >= ? AND job_contracts.to <= ?', from, to)
+  }
 
   has_many :job_skills_required,
            -> { only_required },

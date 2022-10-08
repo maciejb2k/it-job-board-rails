@@ -85,6 +85,6 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
 
   # Locations
   class Job::LocationSerializer < ActiveModel::Serializer
-    attributes :city
+    attributes :street, :building_number, :zip_code, :city, :country
   end
 end
