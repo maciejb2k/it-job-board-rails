@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class Job::Contract < ApplicationRecord
+  # Constants
   CONTRACT_TYPES = %w[b2b uop contract mandatory].freeze
 
+  # Validations
   validates :employment, presence: true,
                          inclusion: {
                            in: :contract_types
@@ -22,6 +24,7 @@ class Job::Contract < ApplicationRecord
   validates :currency, presence: true
   validates :payment_period, presence: true
 
+  # Enums
   enum payment_period: {
     hourly: 'hourly',
     daily: 'daily',
@@ -29,6 +32,7 @@ class Job::Contract < ApplicationRecord
     yearly: 'yearly'
   }, _suffix: true, _default: 'monthly'
 
+  # Associations
   belongs_to :job_offer, class_name: 'Job::Offer'
 
   def contract_types

@@ -13,8 +13,11 @@ Rails.application.routes.draw do
       end
 
       namespace :job do
-        resources :applications, only: %i[create]
-        resources :offers, only: %i[index show]
+        resources :offers do
+          member do
+            post :apply
+          end
+        end
       end
     end
   end

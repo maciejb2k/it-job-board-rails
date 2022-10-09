@@ -52,12 +52,12 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
 
   # Category
   class CategorySerializer < ActiveModel::Serializer
-    attributes :id, :name
+    attributes :name
   end
 
   # Technology
   class TechnologySerializer < ActiveModel::Serializer
-    attributes :id, :name
+    attributes :name
   end
 
   # Skills

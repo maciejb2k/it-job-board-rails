@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Job::Application < ApplicationRecord
+  # Constants
   WORK_FORM_CHOICES = %w[remote hybrid stationary].freeze
   START_TIME_CHOICES = %w[now month two_months plus_two_months].freeze
   WORKING_HOURS_CHOICES = %w[full 4_5 3_4 1_2].freeze
   APPLICATION_STATUSES = %w[new in_progress rejected hired resigned].freeze
 
+  # Validations
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -16,6 +18,10 @@ class Job::Application < ApplicationRecord
   validates :working_hours, inclusion: { in: :working_hours_choices }
   validates :status, inclusion: { in: :application_statuses, allow_blank: true }
 
+  # Associations
+  belongs_to :job_offer, class_name: 'Job::Offer'
+
+  # Callbacks
   before_create :set_default_values
 
   def set_default_values

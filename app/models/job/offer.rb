@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class Job::Offer < ApplicationRecord
+  # Constants
   DATA_SCHEMA = Rails.root.join('config/schemas/job/offer/data.json')
   TRAVELLING_TYPES = %w[none some a_lot].freeze
 
+  # Validations
   validates :title, presence: true
   validates :seniority, presence: true,
                         numericality: {
@@ -26,6 +28,7 @@ class Job::Offer < ApplicationRecord
   }
   validate :valid_until_cannot_be_in_past
 
+  # Directly related to Job::Offer, not independent
   has_many :job_skills, dependent: :destroy, class_name: 'Job::Skill',
                         foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_many :job_benefits, dependent: :destroy, class_name: 'Job::Benefit',
@@ -43,10 +46,23 @@ class Job::Offer < ApplicationRecord
   has_one :job_companies, dependent: :destroy, class_name: 'Job::Company',
                           foreign_key: 'job_offer_id', inverse_of: :job_offer
 
+  # Associations
+  has_many :job_applications, dependent: :destroy, class_name: 'Job::Application',
+                              foreign_key: 'job_offer_id', inverse_of: :job_offer
+
+  # For Job::SimpleOfferSerializer to display only required skills
+  has_many :job_skills_required,
+           -> { only_required },
+           dependent: :destroy,
+           class_name: 'Job::Skill',
+           foreign_key: 'job_offer_id',
+           inverse_of: :job_offer
+
   belongs_to :category
   belongs_to :technology
   belongs_to :employer
 
+  # Validates whether at least one record was provided
   validates :job_skills,
             :job_contracts,
             :job_locations,
@@ -54,9 +70,11 @@ class Job::Offer < ApplicationRecord
             :job_equipment,
             :job_languages, presence: true
 
+  # Only updating
   accepts_nested_attributes_for :job_companies,
                                 :job_equipment
 
+  # Updating & deleting
   accepts_nested_attributes_for :job_skills,
                                 :job_benefits,
                                 :job_contracts,
@@ -64,6 +82,7 @@ class Job::Offer < ApplicationRecord
                                 :job_contacts,
                                 :job_languages, allow_destroy: true
 
+  # Validation of nested attributes
   validates_associated :job_skills,
                        :job_benefits,
                        :job_contracts,
@@ -73,23 +92,29 @@ class Job::Offer < ApplicationRecord
                        :job_languages,
                        :job_equipment
 
+  # Scopes for filtering
   scope :is_active, ->(*) { where('valid_until > ? AND is_active = ?', Time.zone.now, true) }
   scope :is_interview_online, ->(value = true) { where(interview_online: value) }
   scope :is_ua_supported, ->(value = false) { where(ua_supported: value) }
-  scope :by_category, ->(title) { where(title:) }
-  scope :by_category, ->(category_id) { where(category_id:) }
-  scope :by_technology, ->(technology_id) { where(technology_id:) }
+  scope :by_category, lambda { |categories|
+    left_joins(:category)
+      .where('category.name': categories)
+  }
+  scope :by_technology, lambda { |technologies|
+    left_joins(:technology)
+      .where('technology.name': technologies)
+  }
   scope :by_remote, ->(remote) { where(remote:) }
   scope :by_seniority, ->(seniority) { where(seniority:) }
   scope :by_travelling, ->(travelling) { where(travelling:) }
   scope :by_city, ->(cities) { joins(:job_locations).where('job_locations.city': cities) }
-  scope :by_currency, lambda { |currency|
+  scope :by_currency, lambda { |currencies|
     left_joins(:job_contracts)
-      .where('job_contracts.currency': currency)
+      .where('job_contracts.currency': currencies)
   }
-  scope :by_employment, lambda { |employment|
+  scope :by_employment, lambda { |employments|
     left_joins(:job_contracts)
-      .where('job_contracts.employment': employment)
+      .where('job_contracts.employment': employments)
   }
   scope :by_language, lambda { |languages|
     left_joins(:job_languages)
@@ -99,14 +124,12 @@ class Job::Offer < ApplicationRecord
     left_joins(:job_contracts)
       .where('job_contracts.from >= ? AND job_contracts.to <= ?', from, to)
   }
+  scope :by_skill, lambda { |skills|
+    left_joins(:job_skills)
+      .where('job_skills.name': skills)
+  }
 
-  has_many :job_skills_required,
-           -> { only_required },
-           dependent: :destroy,
-           class_name: 'Job::Skill',
-           foreign_key: 'job_offer_id',
-           inverse_of: :job_offer
-
+  # Callbacks
   after_validation :set_slug, only: %i[create update]
   before_create :set_default_values
 

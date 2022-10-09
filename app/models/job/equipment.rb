@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Job::Equipment < ApplicationRecord
+  # Validations
   validates :computer, presence: true
   validates :monitor, presence: true,
                       numericality: {
@@ -9,5 +10,6 @@ class Job::Equipment < ApplicationRecord
                         less_than_or_equal_to: 8
                       }
 
+  # Associations
   belongs_to :job_offer, class_name: 'Job::Offer'
 end

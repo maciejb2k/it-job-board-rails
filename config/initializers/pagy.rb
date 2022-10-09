@@ -5,6 +5,6 @@ require 'pagy/extras/overflow'
 require 'pagy/extras/items'
 
 Pagy::DEFAULT[:items] = 25
-Pagy::DEFAULT[:max_items] = 100
+Pagy::DEFAULT[:max_items] = 50
 Pagy::DEFAULT[:overflow] = :empty_page
 Pagy::DEFAULT.freeze
