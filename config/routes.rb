@@ -9,7 +9,14 @@ Rails.application.routes.draw do
       end
 
       namespace :employer do
-        resources :offers
+        namespace :job do
+          resources :offers
+          resources :applications do
+            member do
+              post :update_status
+            end
+          end
+        end
       end
 
       namespace :job do

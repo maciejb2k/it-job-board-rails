@@ -13,10 +13,10 @@ class CreateJobApplications < ActiveRecord::Migration[7.0]
       t.string :contract, null: false
       t.string :start_time, null: false
       t.string :working_hours, null: false
+      t.timestamp :closed_at
       
       # For employer
       t.boolean :starred, null: false, default: false
-      t.string :status, null: false
       
       t.timestamps
     end

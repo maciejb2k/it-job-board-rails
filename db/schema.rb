@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_09_070019) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_09_122741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -94,6 +94,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_09_070019) do
     t.index ["uid", "provider"], name: "index_employers_on_uid_and_provider", unique: true
   end
 
+  create_table "job_application_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "status", null: false
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "job_application_id", null: false
+    t.index ["job_application_id", "status"], name: "index_job_application_statuses_unique", unique: true
+    t.index ["job_application_id"], name: "index_job_application_statuses_on_job_application_id"
+  end
+
   create_table "job_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -107,8 +117,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_09_070019) do
     t.string "contract", null: false
     t.string "start_time", null: false
     t.string "working_hours", null: false
+    t.datetime "closed_at", precision: nil
     t.boolean "starred", default: false, null: false
-    t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "job_offer_id", null: false
@@ -242,6 +252,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_09_070019) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "job_application_statuses", "job_applications"
   add_foreign_key "job_applications", "candidates"
   add_foreign_key "job_applications", "job_offers"
   add_foreign_key "job_benefits", "job_offers"

@@ -96,6 +96,10 @@ class Job::Offer < ApplicationRecord
   scope :is_active, ->(*) { where('valid_until > ? AND is_active = ?', Time.zone.now, true) }
   scope :is_interview_online, ->(value = true) { where(interview_online: value) }
   scope :is_ua_supported, ->(value = false) { where(ua_supported: value) }
+  scope :by_remote, ->(remote) { where(remote:) }
+  scope :by_seniority, ->(seniority) { where(seniority:) }
+  scope :by_travelling, ->(travelling) { where(travelling:) }
+  scope :by_city, ->(cities) { joins(:job_locations).where('job_locations.city': cities) }
   scope :by_category, lambda { |categories|
     left_joins(:category)
       .where('category.name': categories)
@@ -104,10 +108,6 @@ class Job::Offer < ApplicationRecord
     left_joins(:technology)
       .where('technology.name': technologies)
   }
-  scope :by_remote, ->(remote) { where(remote:) }
-  scope :by_seniority, ->(seniority) { where(seniority:) }
-  scope :by_travelling, ->(travelling) { where(travelling:) }
-  scope :by_city, ->(cities) { joins(:job_locations).where('job_locations.city': cities) }
   scope :by_currency, lambda { |currencies|
     left_joins(:job_contracts)
       .where('job_contracts.currency': currencies)

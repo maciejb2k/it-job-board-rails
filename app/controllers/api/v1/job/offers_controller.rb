@@ -32,9 +32,9 @@ class Api::V1::Job::OffersController < ApplicationController
 
     @pagy, @offers = pagy(
       apply_scopes(Job::Offer)
-        .order(ordering_params(params))
-        .includes(eager_load_associations)
-        .distinct
+        .order(ordering_params(params)) # order by 'sort' param
+        .includes(eager_load_associations) # for n+1 problem
+        .distinct # avoid redundant records from joins
         .all
     )
 
@@ -47,7 +47,7 @@ class Api::V1::Job::OffersController < ApplicationController
   end
 
   def apply
-    @application = @offer.job_applications.build(application_params)
+    @application = @offer.job_applications.build(apply_params)
 
     if @application.save
       render json: @application, status: :created
@@ -58,8 +58,8 @@ class Api::V1::Job::OffersController < ApplicationController
 
   private
 
-  def application_params
-    params.require(:application).permit(
+  def apply_params
+    params.require(:apply).permit(
       :first_name,
       :last_name,
       :email,
@@ -67,12 +67,11 @@ class Api::V1::Job::OffersController < ApplicationController
       :cv,
       :data,
       :note,
-      :work_from,
+      :work_form,
       :city,
       :contract,
       :start_time,
-      :working_hours,
-      :status
+      :working_hours
     )
   end
 
