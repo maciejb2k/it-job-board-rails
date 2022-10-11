@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
-class CategoriesController < ApplicationController
+class Api::V1::Admin::CategoriesController < ApplicationController
   before_action :set_category, except: %i[index create]
 
   def index
     render json: {
       data: ActiveModel::SerializableResource.new(
         Category.all,
-        each_serializer: CategorySerialize
+        each_serializer: Api::V1::CategorySerialize
       )
     }
   end
 
   def show
-    render json: CategorySerializer.new(@category).to_h
+    render json: Api::V1::Admin::CategorySerializer.new(@category).to_h
   end
 
   def create
     @category = Category.new(category_params)
     if @category.save
-      render json: CategorySerializer.new(@category).to_h, status: :created
+      render json: Api::V1::Admin::CategorySerializer.new(@category).to_h, status: :created
     else
       render json: { errors: @category.errors.messages }, status: :unprocessable_entity
     end

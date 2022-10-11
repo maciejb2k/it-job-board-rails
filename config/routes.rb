@@ -1,11 +1,31 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  namespace :auth do
-    mount_devise_token_auth_for 'Employer', at: 'employer'
-  end
+  namespace :api do
+    namespace :v1 do
+      namespace :auth do
+        mount_devise_token_auth_for 'Candidate', at: 'candidate'
+        mount_devise_token_auth_for 'Employer', at: 'employer'
+      end
 
-  namespace :job do
-    resources :offers
+      namespace :employer do
+        namespace :job do
+          resources :offers
+          resources :applications do
+            member do
+              post :update_status
+            end
+          end
+        end
+      end
+
+      namespace :job do
+        resources :offers do
+          member do
+            post :apply
+          end
+        end
+      end
+    end
   end
 end

@@ -32,3 +32,6 @@ Metrics/MethodLength:
 
 Metrics/ClassLength:
   Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
