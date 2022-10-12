@@ -4,12 +4,20 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
   before_action :set_offer, except: %i[index create]
 
   def index
-    render json: {
-      data: ActiveModel::SerializableResource.new(
-        Job::Offer.all,
-        each_serializer: Api::V1::Employer::Job::OfferSerializer
-      )
-    }
+    eager_load_associations = %i[
+      category technology job_skills_required
+      job_languages job_contracts job_locations
+    ]
+
+    @pagy, @offers = pagy(
+      apply_scopes(Job::Offer.includes(eager_load_associations)) # for n+1 problem
+        .order(ordering_params(params)) # order by 'sort' param
+        .distinct # avoid redundant records from joins
+        .all
+    )
+
+    render json: @offers,
+           each_serializer: Api::V1::Job::SimpleOfferSerializer
   end
 
   def show
