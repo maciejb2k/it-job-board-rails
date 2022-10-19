@@ -38,7 +38,7 @@ class Api::V1::Employer::Job::CompleteApplicationSerializer < ActiveModel::Seria
 
   # Statuses
   class Job::ApplicationStatusSerializer < ActiveModel::Serializer
-    attributes :status, :note
+    attributes :status, :note, :created_at
 
     def note
       object.note || ''
