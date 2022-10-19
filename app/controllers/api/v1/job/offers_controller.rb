@@ -47,7 +47,19 @@ class Api::V1::Job::OffersController < ApplicationController
   end
 
   def apply
-    @application = @offer.job_applications.build(apply_params)
+    @application = @offer.job_applications.build(
+      apply_params.merge(
+        candidate: current_api_v1_candidate
+      )
+    )
+
+    if api_v1_candidate_signed_in?
+      @application.assign_attributes(
+        email: current_api_v1_candidate.email,
+        first_name: current_api_v1_candidate.first_name,
+        last_name: current_api_v1_candidate.last_name
+      )
+    end
 
     if @application.save
       render json: @application, status: :created

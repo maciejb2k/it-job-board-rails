@@ -2,6 +2,8 @@
 
 class Api::V1::Employer::Job::OffersController < ApplicationController
   before_action :set_offer, except: %i[index create]
+  before_action :authenticate_api_v1_employer!
+  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
     eager_load_associations = %i[
@@ -21,13 +23,14 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
   end
 
   def show
-    render json: Api::V1::Employer::OfferSerializer.new(@offer).to_h
+    render json: @offer, serializer: Api::V1::Employer::OfferSerializer
   end
 
   def create
-    @offer = Job::Offer.new(offer_params)
+    @offer = current_api_v1_employer.job_offers.build(offer_params)
+
     if @offer.save
-      render json: Api::V1::Employer::Job::OfferSerializer.new(@offer).to_h, status: :created
+      render json: @offer, serializer: Api::V1::Employer::Job::OfferSerializer, status: :created
     else
       render json: { errors: @offer.errors.messages }, status: :unprocessable_entity
     end
@@ -127,6 +130,6 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
   end
 
   def set_offer
-    @offer = Job::Offer.find(params[:id])
+    @offer = current_api_v1_employer.job_offers.find(params[:id])
   end
 end

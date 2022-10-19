@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_09_122741) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_13_095156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -38,6 +38,24 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_09_122741) do
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_admins_on_uid_and_provider", unique: true
+  end
+
+  create_table "candidate_infos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "photo"
+    t.string "location", null: false
+    t.string "seniority", null: false
+    t.string "status", null: false
+    t.string "specialization", null: false
+    t.string "position", null: false
+    t.integer "salary_from"
+    t.integer "salary_to"
+    t.string "currency"
+    t.boolean "hide_salary", default: false, null: false
+    t.string "industry"
+    t.string "carrer_path"
+    t.string "technology"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "candidates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
