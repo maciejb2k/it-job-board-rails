@@ -8,5 +8,5 @@ class Employer < ApplicationRecord
          :recoverable, :rememberable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  has_many :job_offers, dependent: :destroy
+  has_many :job_offers, class_name: 'Job::Offer', dependent: :destroy, foreign_key: 'employer_id', inverse_of: :employer
 end

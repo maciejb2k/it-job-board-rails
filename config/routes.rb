@@ -3,9 +3,18 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      namespace :auth do
-        mount_devise_token_auth_for 'Candidate', at: 'candidate'
-        mount_devise_token_auth_for 'Employer', at: 'employer'
+      mount_devise_token_auth_for 'Candidate', at: 'candidates'
+      mount_devise_token_auth_for 'Employer', at: 'employers'
+
+      namespace :candidates do
+        resource :detail
+        namespace :job do
+          resources :applications, only: %i[index show] do
+            member do
+              post :resign
+            end
+          end
+        end
       end
 
       namespace :employer do
@@ -14,6 +23,7 @@ Rails.application.routes.draw do
           resources :applications do
             member do
               post :update_status
+              put :close
             end
           end
         end

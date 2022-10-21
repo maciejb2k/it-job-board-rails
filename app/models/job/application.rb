@@ -20,6 +20,7 @@ class Job::Application < ApplicationRecord
 
   # Associations
   belongs_to :job_offer, class_name: 'Job::Offer'
+  belongs_to :candidate, optional: true
 
   has_many :job_application_statuses, dependent: :destroy,
                                       class_name: 'Job::ApplicationStatus',

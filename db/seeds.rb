@@ -31,11 +31,11 @@ end
 
 p "Created #{Technology.count} technologies"
 
-Employer.create(email: 'someone@comapny.com', password: 'password')
+Employer.create(email: 'employer1@company.com', password: 'password')
+Employer.create(email: 'employer2@company.com', password: 'password')
+Employer.create(email: 'employer3@company.com', password: 'password')
 
-p "Created employer: #{Employer.first.email}"
-
-1000.times do |i|
+25.times do |i|
   params = {
     "offer": {
       "title": "Senior Ruby Developer",
@@ -47,7 +47,7 @@ p "Created employer: #{Employer.first.email}"
       "interview_online": true,
       "category_id": Category.find_by(name: CATEGORIES.sample).id,
       "technology_id": Technology.find_by(name: TECHNOLOGIES.sample).id,
-      "employer_id": Employer.first.id,
+      "employer_id": Employer.find_by(email: "employer#{rand(1..3)}@company.com").id,
       "job_skills_attributes": [  
           {
             "name": "Ruby",

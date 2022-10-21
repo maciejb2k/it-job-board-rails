@@ -11,12 +11,6 @@ gem 'rails', '~> 7.0.3', '>= 7.0.3.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 
-# Performance testing
-gem 'rack-mini-profiler'
-gem 'memory_profiler'
-gem 'stackprof'
-gem 'flamegraph'
-
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 5.0'
 
@@ -65,6 +59,9 @@ gem 'database_cleaner', '~> 2.0.1'
 
 # Pagination
 gem 'pagy', '~> 5.10'
+
+# Allow certain values in strong parameters
+gem 'allowable', '~> 1.1.0'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
