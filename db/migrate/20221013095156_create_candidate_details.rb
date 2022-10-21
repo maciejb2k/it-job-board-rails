@@ -1,6 +1,6 @@
-class CreateCandidateInfos < ActiveRecord::Migration[7.0]
+class CreateCandidateDetails < ActiveRecord::Migration[7.0]
   def change
-    create_table :candidate_infos, id: :uuid do |t|
+    create_table :candidate_details, id: :uuid do |t|
       t.string :photo
       t.string :location, null: false
       t.string :seniority, null: false
@@ -17,5 +17,7 @@ class CreateCandidateInfos < ActiveRecord::Migration[7.0]
       
       t.timestamps
     end
+
+    add_reference :candidate_details, :candidate, index: { unique: true }, null: false, foreign_key: true, type: :uuid
   end
 end

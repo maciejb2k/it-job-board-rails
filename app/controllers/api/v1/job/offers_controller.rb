@@ -4,6 +4,8 @@ class Api::V1::Job::OffersController < ApplicationController
   include Orderable
 
   before_action :set_offer, except: %i[index]
+  before_action :set_signed_in_candidate_data, only: %i[apply]
+  before_action :check_user_exists, only: %i[apply]
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
   with_options only: :index do
@@ -25,6 +27,7 @@ class Api::V1::Job::OffersController < ApplicationController
   end
 
   def index
+    # names from model
     eager_load_associations = %i[
       category technology job_skills_required
       job_languages job_contracts job_locations
@@ -52,14 +55,6 @@ class Api::V1::Job::OffersController < ApplicationController
         candidate: current_api_v1_candidate
       )
     )
-
-    if api_v1_candidate_signed_in?
-      @application.assign_attributes(
-        email: current_api_v1_candidate.email,
-        first_name: current_api_v1_candidate.first_name,
-        last_name: current_api_v1_candidate.last_name
-      )
-    end
 
     if @application.save
       render json: @application, status: :created
@@ -89,5 +84,23 @@ class Api::V1::Job::OffersController < ApplicationController
 
   def set_offer
     @offer = Job::Offer.find(params[:id])
+  end
+
+  # TODO: is this a good solution?
+  def set_signed_in_candidate_data
+    return unless api_v1_candidate_signed_in?
+
+    params[:apply][:email] = current_api_v1_candidate.email
+    params[:apply][:first_name] = current_api_v1_candidate.first_name
+    params[:apply][:last_name] = current_api_v1_candidate.last_name
+  end
+
+  # TODO: untested feature, probably error prone
+  def check_user_exists
+    return unless Candidate.exists?(email: params[:apply][:email]) && !api_v1_candidate_signed_in?
+
+    render json: {
+      error: 'applying from registered e-mail requires signing in first'
+    }, status: :unprocessable_entity
   end
 end

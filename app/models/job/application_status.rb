@@ -8,7 +8,7 @@ class Job::ApplicationStatus < ApplicationRecord
   validates :status, inclusion: { in: :application_statuses }
   validates :job_application, uniqueness: { # prevent inserting same status twice
     scope: %i[job_application_id status],
-    message: 'cannot set same status twice'
+    message: 'cannot set the same status twice'
   }
   validate :check_status
 

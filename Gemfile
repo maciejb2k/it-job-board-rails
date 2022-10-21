@@ -60,6 +60,9 @@ gem 'database_cleaner', '~> 2.0.1'
 # Pagination
 gem 'pagy', '~> 5.10'
 
+# Allow certain values in strong parameters
+gem 'allowable', '~> 1.1.0'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]

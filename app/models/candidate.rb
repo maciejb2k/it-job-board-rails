@@ -13,5 +13,5 @@ class Candidate < ApplicationRecord
 
   has_many :job_applications, dependent: :nullify, class_name: 'Job::Application',
                               inverse_of: :candidate
-  has_one :candidate_info, dependent: :destroy, inverse_of: :candidate
+  has_one :candidate_detail, dependent: :destroy, inverse_of: :candidate
 end

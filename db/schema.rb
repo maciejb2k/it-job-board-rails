@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_13_095156) do
     t.index ["uid", "provider"], name: "index_admins_on_uid_and_provider", unique: true
   end
 
-  create_table "candidate_infos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "candidate_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "photo"
     t.string "location", null: false
     t.string "seniority", null: false
@@ -56,6 +56,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_13_095156) do
     t.string "technology"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "candidate_id", null: false
+    t.index ["candidate_id"], name: "index_candidate_details_on_candidate_id", unique: true
   end
 
   create_table "candidates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -270,6 +272,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_13_095156) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "candidate_details", "candidates"
   add_foreign_key "job_application_statuses", "job_applications"
   add_foreign_key "job_applications", "candidates"
   add_foreign_key "job_applications", "job_offers"

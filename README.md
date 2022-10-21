@@ -10,7 +10,7 @@ Technologies: `Ruby on Rails 7`, `RSpec 5`, `PostgreSQL 13`, `Docker`
 
 ## Setup
 
-If you are using Windows, install Docker Desktop, install Linux (in my case Ubuntu) on WSL2, enable docker integration and git clone application inside it.
+If you are using **Windows**, install **Docker Desktop**, install **Linux** (in my case Ubuntu) on **WSL2**, enable docker integration and git clone application inside it.
 
 Copy `.env.example` and rename it to `.env`.
 

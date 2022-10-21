@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CandidateInfo < ApplicationRecord
+class CandidateDetail < ApplicationRecord
   validates :location, presence: true
   validates :seniority, presence: true,
                         numericality: {
@@ -19,6 +19,7 @@ class CandidateInfo < ApplicationRecord
                         numericality: {
                           greater_than_or_equal_to: 0
                         }
+  validates :candidate, uniqueness: true
 
   belongs_to :candidate
 end

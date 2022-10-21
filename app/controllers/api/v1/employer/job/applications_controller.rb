@@ -31,7 +31,7 @@ class Api::V1::Employer::Job::ApplicationsController < ApplicationController
     @application_status = @application.job_application_statuses.build(application_params)
 
     if @application_status.save
-      render json: @application_status, status: :created
+      render json: @application_status
     else
       render json: { errors: @application_status.errors.messages }, status: :unprocessable_entity
     end
