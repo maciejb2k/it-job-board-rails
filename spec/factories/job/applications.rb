@@ -9,6 +9,6 @@ FactoryBot.define do
     contract { 'uop' }
     start_time { 'now' }
     working_hours { 'full' }
-    job_offer { nil }
+    job_offer
   end
 end

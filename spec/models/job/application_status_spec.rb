@@ -24,8 +24,7 @@ RSpec.describe Job::ApplicationStatus, type: :model do
       let(:application) { create(:job_application) }
       let(:application_status) do
         create(
-          :job_application_status,
-          status: 'hired',
+          :hired_job_application_status,
           job_application: application
         )
       end
