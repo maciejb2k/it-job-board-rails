@@ -43,8 +43,8 @@ class Job::Offer < ApplicationRecord
                            foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_one :job_equipment, dependent: :destroy, class_name: 'Job::Equipment',
                           foreign_key: 'job_offer_id', inverse_of: :job_offer
-  has_one :job_companies, dependent: :destroy, class_name: 'Job::Company',
-                          foreign_key: 'job_offer_id', inverse_of: :job_offer
+  has_one :job_company, dependent: :destroy, class_name: 'Job::Company',
+                        foreign_key: 'job_offer_id', inverse_of: :job_offer
 
   # Associations
   has_many :job_applications, dependent: :destroy, class_name: 'Job::Application',
@@ -66,12 +66,12 @@ class Job::Offer < ApplicationRecord
   validates :job_skills,
             :job_contracts,
             :job_locations,
-            :job_companies,
+            :job_company,
             :job_equipment,
             :job_languages, presence: true
 
   # Only updating
-  accepts_nested_attributes_for :job_companies,
+  accepts_nested_attributes_for :job_company,
                                 :job_equipment
 
   # Updating & deleting
@@ -87,7 +87,7 @@ class Job::Offer < ApplicationRecord
                        :job_benefits,
                        :job_contracts,
                        :job_locations,
-                       :job_companies,
+                       :job_company,
                        :job_contacts,
                        :job_languages,
                        :job_equipment

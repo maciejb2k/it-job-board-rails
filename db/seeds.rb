@@ -118,7 +118,7 @@ Employer.create(email: 'employer3@company.com', password: 'password')
             "country_code": "PL"
         }
       ],
-      "job_companies_attributes": {
+      "job_company_attributes": {
           "name": "W Gorącej Wodzie Company",
           "logo": "https://ecs-aws.com/path/to/file.png",
           "size": 100,

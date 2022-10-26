@@ -250,6 +250,7 @@ GEM
     shoulda-matchers (5.2.0)
       activesupport (>= 5.2.0)
     strscan (3.0.4)
+    test-prof (1.0.10)
     thor (1.2.1)
     timeout (0.3.0)
     tzinfo (2.0.5)
@@ -290,6 +291,7 @@ DEPENDENCIES
   rubocop-rails (~> 2.16.1)
   rubocop-rspec (~> 2.13.2)
   shoulda-matchers (~> 5.0)
+  test-prof (~> 1.0)
   tzinfo-data
 
 RUBY VERSION

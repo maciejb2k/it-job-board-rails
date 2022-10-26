@@ -21,7 +21,7 @@ class Api::V1::Employer::Job::OfferSerializer < ActiveModel::Serializer
   attribute :job_benefits, key: :benefits
   attribute :job_contracts, key: :contracts
   attribute :job_locations, key: :locations
-  attribute :job_companies, key: :company
+  attribute :job_company, key: :company
   attribute :job_contacts, key: :contacts
   attribute :job_languages, key: :languages
   attribute :job_equipment, key: :equipment

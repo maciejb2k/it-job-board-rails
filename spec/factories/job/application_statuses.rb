@@ -16,11 +16,11 @@ FactoryBot.define do
     trait :hired do
       status { 'hired' }
     end
-    
+
     trait :rejected do
       status { 'rejected' }
     end
-    
+
     trait :resigned do
       status { 'resigned' }
     end

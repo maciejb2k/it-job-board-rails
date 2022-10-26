@@ -8,9 +8,10 @@ RSpec.describe Job::Offer, type: :model do
     it { is_expected.to have_many(:job_benefits) }
     it { is_expected.to have_many(:job_contracts) }
     it { is_expected.to have_many(:job_locations) }
-    it { is_expected.to have_many(:job_companies) }
     it { is_expected.to have_many(:job_contacts) }
     it { is_expected.to have_many(:job_languages) }
+    it { is_expected.to have_one(:job_company) }
+    it { is_expected.to have_one(:job_equpiment) }
 
     it { is_expected.to belong_to(:category) }
     it { is_expected.to belong_to(:user) }
