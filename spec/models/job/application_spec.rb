@@ -22,15 +22,15 @@ RSpec.describe Job::Application, type: :model do
       it { is_expected.to validate_presence_of(:email) }
 
       context 'when email format is incorrect' do
-        it { expect(build(:job_application, email: 'wrongemail')).not_to be_valid }
-        it { expect(build(:job_application, email: 'wrong.com')).not_to be_valid }
-        it { expect(build(:job_application, email: '@wrong')).not_to be_valid }
-        it { expect(build(:job_application, email: 'wrong@')).not_to be_valid }
+        it { is_expected.not_to allow_value('wrongemail').for(:email) }
+        it { is_expected.not_to allow_value('wrong.com').for(:email) }
+        it { is_expected.not_to allow_value('@wrong').for(:email) }
+        it { is_expected.not_to allow_value('wrong@').for(:email) }
       end
 
       context 'when email format is correct' do
-        it { expect(build(:job_application, email: 'my.name@example.com')).to be_valid }
-        it { expect(build(:job_application, email: 'email@example')).to be_valid }
+        it { is_expected.to allow_value('test@test').for(:email) }
+        it { is_expected.to allow_value('valid.email@example.com').for(:email) }
       end
     end
 
