@@ -35,3 +35,9 @@ Metrics/ClassLength:
 
 Style/ClassAndModuleChildren:
   Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
