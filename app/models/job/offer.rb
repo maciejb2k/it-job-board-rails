@@ -5,6 +5,9 @@ class Job::Offer < ApplicationRecord
   DATA_SCHEMA = Rails.root.join('config/schemas/job/offer/data.json')
   TRAVELLING_TYPES = %w[none some a_lot].freeze
 
+  # For RSpec
+  attr_accessor :skip_validations
+
   # Validations
   validates :title, presence: true
   validates :seniority, presence: true,
@@ -26,7 +29,7 @@ class Job::Offer < ApplicationRecord
     message: ->(errors) { errors },
     schema: DATA_SCHEMA
   }
-  validate :valid_until_cannot_be_in_past
+  validate :valid_until_cannot_be_in_past, unless: :skip_validations
 
   # Directly related to Job::Offer, not independent
   has_many :job_skills, dependent: :destroy, class_name: 'Job::Skill',
@@ -99,7 +102,7 @@ class Job::Offer < ApplicationRecord
   scope :by_remote, ->(remote) { where(remote:) }
   scope :by_seniority, ->(seniority) { where(seniority:) }
   scope :by_travelling, ->(travelling) { where(travelling:) }
-  scope :by_city, ->(cities) { joins(:job_locations).where('job_locations.city': cities) }
+  scope :by_city, ->(cities) { left_joins(:job_locations).where('job_locations.city': cities) }
   scope :by_category, lambda { |categories|
     left_joins(:category)
       .where('category.name': categories)
@@ -154,6 +157,6 @@ class Job::Offer < ApplicationRecord
   end
 
   def set_default_values
-    self.travelling = 'none'
+    self.travelling ||= 'none'
   end
 end

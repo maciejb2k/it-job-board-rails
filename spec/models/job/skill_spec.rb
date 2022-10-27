@@ -23,4 +23,16 @@ RSpec.describe Job::Skill, type: :model do
       }
     end
   end
+
+  describe '.only_required' do
+    it 'includes only required skills' do
+      skill = create(:job_skill, optional: false)
+      expect(described_class.only_required).to include(skill)
+    end
+
+    it 'excludes optional skills' do
+      skill = create(:job_skill, optional: true)
+      expect(described_class.only_required).not_to include(skill)
+    end
+  end
 end

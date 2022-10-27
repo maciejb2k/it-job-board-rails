@@ -15,5 +15,12 @@ RSpec.describe Job::Language, type: :model do
     describe 'code' do
       it { is_expected.to validate_presence_of(:code) }
     end
+
+    describe 'proficiency' do
+      it do
+        is_expected.to validate_inclusion_of(:proficiency)
+          .in_array(Job::Language::PROFICIENCY_TYPES)
+      end
+    end
   end
 end
