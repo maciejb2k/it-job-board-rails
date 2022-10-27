@@ -99,7 +99,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                     country
                     country_code
                   ],
-                  job_companies_attributes: %i[
+                  job_company_attributes: %i[
                     name
                     logo
                     size

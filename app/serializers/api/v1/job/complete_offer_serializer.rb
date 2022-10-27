@@ -64,7 +64,7 @@ class Api::V1::Job::CompleteOfferSerializer < ActiveModel::Serializer
   end
 
   def company
-    Job::CompanySerializer.new(object.job_companies).attributes
+    Job::CompanySerializer.new(object.job_company).attributes
   end
 
   def equipment

@@ -18,8 +18,14 @@ RSpec.describe Job::Contact, type: :model do
 
     describe 'email' do
       it { is_expected.to validate_presence_of(:email) }
-      it { is_expected.not_to allow_value('invalid.test.com').for(:email) }
-      it { is_expected.to allow_value('test@test').for(:email) }
+
+      context 'when email is invalid' do
+        it { is_expected.not_to allow_value('invalid.test.com').for(:email) }
+      end
+
+      context 'when email is valid' do
+        it { is_expected.to allow_value('test@test').for(:email) }
+      end
     end
   end
 end

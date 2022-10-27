@@ -5,6 +5,9 @@ class Job::Offer < ApplicationRecord
   DATA_SCHEMA = Rails.root.join('config/schemas/job/offer/data.json')
   TRAVELLING_TYPES = %w[none some a_lot].freeze
 
+  # For RSpec
+  attr_accessor :skip_validations
+
   # Validations
   validates :title, presence: true
   validates :seniority, presence: true,
@@ -26,7 +29,7 @@ class Job::Offer < ApplicationRecord
     message: ->(errors) { errors },
     schema: DATA_SCHEMA
   }
-  validate :valid_until_cannot_be_in_past
+  validate :valid_until_cannot_be_in_past, unless: :skip_validations
 
   # Directly related to Job::Offer, not independent
   has_many :job_skills, dependent: :destroy, class_name: 'Job::Skill',
@@ -43,8 +46,8 @@ class Job::Offer < ApplicationRecord
                            foreign_key: 'job_offer_id', inverse_of: :job_offer
   has_one :job_equipment, dependent: :destroy, class_name: 'Job::Equipment',
                           foreign_key: 'job_offer_id', inverse_of: :job_offer
-  has_one :job_companies, dependent: :destroy, class_name: 'Job::Company',
-                          foreign_key: 'job_offer_id', inverse_of: :job_offer
+  has_one :job_company, dependent: :destroy, class_name: 'Job::Company',
+                        foreign_key: 'job_offer_id', inverse_of: :job_offer
 
   # Associations
   has_many :job_applications, dependent: :destroy, class_name: 'Job::Application',
@@ -66,12 +69,12 @@ class Job::Offer < ApplicationRecord
   validates :job_skills,
             :job_contracts,
             :job_locations,
-            :job_companies,
+            :job_company,
             :job_equipment,
             :job_languages, presence: true
 
   # Only updating
-  accepts_nested_attributes_for :job_companies,
+  accepts_nested_attributes_for :job_company,
                                 :job_equipment
 
   # Updating & deleting
@@ -87,7 +90,7 @@ class Job::Offer < ApplicationRecord
                        :job_benefits,
                        :job_contracts,
                        :job_locations,
-                       :job_companies,
+                       :job_company,
                        :job_contacts,
                        :job_languages,
                        :job_equipment
@@ -99,7 +102,7 @@ class Job::Offer < ApplicationRecord
   scope :by_remote, ->(remote) { where(remote:) }
   scope :by_seniority, ->(seniority) { where(seniority:) }
   scope :by_travelling, ->(travelling) { where(travelling:) }
-  scope :by_city, ->(cities) { joins(:job_locations).where('job_locations.city': cities) }
+  scope :by_city, ->(cities) { left_joins(:job_locations).where('job_locations.city': cities) }
   scope :by_category, lambda { |categories|
     left_joins(:category)
       .where('category.name': categories)
@@ -154,6 +157,6 @@ class Job::Offer < ApplicationRecord
   end
 
   def set_default_values
-    self.travelling = 'none'
+    self.travelling ||= 'none'
   end
 end

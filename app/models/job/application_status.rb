@@ -6,8 +6,8 @@ class Job::ApplicationStatus < ApplicationRecord
 
   # Validations
   validates :status, inclusion: { in: :application_statuses }
-  validates :job_application, uniqueness: { # prevent inserting same status twice
-    scope: %i[job_application_id status],
+  validates :status, uniqueness: { # prevent inserting same status twice
+    scope: %i[job_application_id],
     message: 'cannot set the same status twice'
   }
   validate :check_status
@@ -26,7 +26,9 @@ class Job::ApplicationStatus < ApplicationRecord
 
   # Check wheteher application is closed
   def check_status
-    if job_application.job_application_statuses.where(status: %w[rejected hired resigned]).any?
+    if job_application.present? && job_application.job_application_statuses.where(
+      status: %w[rejected hired resigned]
+    ).any?
       errors.add(:status, 'cannot update status, if application is closed')
     end
   end

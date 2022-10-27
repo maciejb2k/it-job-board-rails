@@ -74,6 +74,7 @@ group :development, :test do
   gem 'rubocop-rails', '~> 2.16.1', require: false
   gem 'rubocop-rspec', '~> 2.13.2', require: false
   gem 'shoulda-matchers', '~> 5.0'
+  gem "test-prof", "~> 1.0"
 end
 
 group :development do
