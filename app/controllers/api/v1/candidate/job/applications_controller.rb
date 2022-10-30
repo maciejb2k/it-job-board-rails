@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::Candidates::Job::ApplicationsController < ApplicationController
+class Api::V1::Candidate::Job::ApplicationsController < ApplicationController
   include Orderable
 
   before_action :authenticate_api_v1_candidate!
@@ -18,11 +18,11 @@ class Api::V1::Candidates::Job::ApplicationsController < ApplicationController
     )
 
     render json: @applications,
-           each_serializer: Api::V1::Candidates::Job::SimpleApplicationSerializer
+           each_serializer: Api::V1::Candidate::Job::SimpleApplicationSerializer
   end
 
   def show
-    render json: @application, serializer: Api::V1::Candidates::Job::CompleteApplicationSerializer
+    render json: @application, serializer: Api::V1::Candidate::Job::CompleteApplicationSerializer
   end
 
   def resign

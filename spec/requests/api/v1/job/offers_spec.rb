@@ -441,19 +441,19 @@ RSpec.describe 'Api::V1::Job::Offers', type: :request do
       let!(:job_offer) { create(:job_offer) }
 
       it 'returns http success' do
-        get "#{api_v1_job_offers_path}/#{job_offer.id}"
+        get api_v1_job_offer_path(id: job_offer.id)
         expect(response).to have_http_status(:ok)
       end
 
       it 'returns job offer' do
-        get "#{api_v1_job_offers_path}/#{job_offer.id}"
+        get api_v1_job_offer_path(id: job_offer.id)
         expect(JSON.parse(response.body)['title']).to eq(job_offer.title)
       end
     end
 
     context 'when job offer doesn\'t exist' do
       it 'returns http not found', :realistic_error_responses do
-        get "#{api_v1_job_offers_path}/1"
+        get api_v1_job_offer_path(id: 1)
         expect(response).to have_http_status(:not_found)
       end
     end

@@ -16,6 +16,7 @@ class Api::V1::Employer::Job::CompleteApplicationSerializer < ActiveModel::Seria
              :closed_at,
              :starred,
              :data,
+             :job_offer_id,
              :statuses
 
   def name
