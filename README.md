@@ -40,10 +40,10 @@ In the current state of project, I've implemented basic functionalities listed b
 - 📨 **Anyone can apply** for job offer.
 - 📊 Employers can **easily manage** candidates through recruitment process.
 
-RSpec:
-- ✔️ Models
-- ❌ Requests
-- ❌ Serializers
+RSpec (22% coverage):
+- ✔️ Models (96% coverage)
+- ❌ Requests (0% coverage)
+- ❌ Serializers (0% coverage)
 
 TODO:
 - ❌ Add tests to all models, controllers and serializers.
