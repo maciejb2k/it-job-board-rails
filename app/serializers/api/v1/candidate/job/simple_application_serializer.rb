@@ -14,10 +14,6 @@ class Api::V1::Candidate::Job::SimpleApplicationSerializer < ActiveModel::Serial
     Job::OfferSerializer.new(object.job_offer).attributes
   end
 
-  def name
-    "#{object.first_name} #{object.last_name}"
-  end
-
   # Job::Offer
   class Job::OfferSerializer < ActiveModel::Serializer
     attributes :id, :title

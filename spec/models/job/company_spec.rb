@@ -25,5 +25,23 @@ RSpec.describe Job::Company, type: :model do
           .only_integer
       }
     end
+
+    describe 'data' do
+      context 'with invalid json' do
+        let_it_be(:job_company) { build(:job_company, data: '{}') }
+
+        it 'raises validation error' do
+          expect(job_company).not_to be_valid
+        end
+      end
+
+      context 'with valid json' do
+        let_it_be(:job_company) { build(:job_company, data: '{"links": []}') }
+
+        it 'passes validation' do
+          expect(job_company).to be_valid
+        end
+      end
+    end
   end
 end

@@ -68,6 +68,24 @@ RSpec.describe Job::Offer, type: :model do
       }
     end
 
+    describe 'data' do
+      context 'with invalid json' do
+        let_it_be(:job_offer) { build(:job_offer, data: '{}') }
+
+        it 'raises validation error' do
+          expect(job_offer).not_to be_valid
+        end
+      end
+
+      context 'with valid json' do
+        let_it_be(:job_offer) { build(:job_offer, data: '{"links": []}') }
+
+        it 'passes validation' do
+          expect(job_offer).to be_valid
+        end
+      end
+    end
+
     describe 'required associations' do
       it { is_expected.to validate_presence_of(:job_skills) }
       it { is_expected.to validate_presence_of(:job_contracts) }
@@ -497,6 +515,15 @@ RSpec.describe Job::Offer, type: :model do
       offer = create(:job_offer, title: old_title)
       offer.update(title: new_title)
       expect(offer.slug).to eq(new_title.parameterize)
+    end
+  end
+
+  describe '#to_param' do
+    it 'overrides default to_param method' do
+      title = 'senior ruby on rails developer'
+      offer = create(:job_offer, title:)
+
+      expect(offer.to_param).to eq("#{offer.id}-#{offer.slug}")
     end
   end
 end

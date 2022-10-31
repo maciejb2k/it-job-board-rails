@@ -52,12 +52,12 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
 
   # Category
   class CategorySerializer < ActiveModel::Serializer
-    attributes :name
+    attributes :id, :name
   end
 
   # Technology
   class TechnologySerializer < ActiveModel::Serializer
-    attributes :name
+    attributes :id, :name
   end
 
   # Skills
@@ -67,7 +67,7 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
 
   # Contracts
   class Job::ContractSerializer < ActiveModel::Serializer
-    attributes :employment, :from, :to, :currency
+    attributes :id, :employment, :from, :to, :currency
 
     def from
       object.hide_salary ? 'undisclosed' : object.from
@@ -80,11 +80,11 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
 
   # Languages
   class Job::LanguageSerializer < ActiveModel::Serializer
-    attributes :name, :code
+    attributes :id, :name, :code
   end
 
   # Locations
   class Job::LocationSerializer < ActiveModel::Serializer
-    attributes :street, :building_number, :zip_code, :city, :country
+    attributes :id, :street, :building_number, :zip_code, :city, :country
   end
 end

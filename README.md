@@ -40,16 +40,24 @@ In the current state of project, I've implemented basic functionalities listed b
 - 📨 **Anyone can apply** for job offer.
 - 📊 Employers can **easily manage** candidates through recruitment process.
 
-RSpec:
-- ✔️ Models (97% coverage)
-- ✔️ Requests (99% coverage)
-- ❌ Serializers (0% coverage)
-
 TODO:
-- ❌ Add tests to all models, controllers and serializers.
+- ❌ Improve dashboards functionailites of candidates and employers.
+- ❌ Add panel for application administrators.
 - ❌ Add subscription based model for employers and pricing plans.
 
-### Example API responses:
+## RSpec
+
+All files - 97.38% covered - 293 examples, 0 failures (from SimpleCov gem):
+- ✔️ Models (100% covered)
+- ✔️ Requests (100% covered)
+
+I know that code coverage isn't good indicator, because you can achieve 100% coverage just by invoking every function in codebase, without testing anything.
+
+In my opinion, I've covered most of application functionalities and edge cases in my models and requests specs.
+
+My testing skills will for sure improve in the future.
+
+## Example API responses:
 
 Below there are example responses from endpoints.
 

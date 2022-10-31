@@ -28,11 +28,7 @@ class Api::V1::Candidate::DetailsController < ApplicationController
   end
 
   def destroy
-    if @detail.destroy
-      render json: @detail
-    else
-      render json: { errors: @detail.errors }, status: :unprocessable_entity
-    end
+    render json: @detail if @detail.destroy
   end
 
   private
