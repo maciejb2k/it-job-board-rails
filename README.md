@@ -40,9 +40,9 @@ In the current state of project, I've implemented basic functionalities listed b
 - 📨 **Anyone can apply** for job offer.
 - 📊 Employers can **easily manage** candidates through recruitment process.
 
-RSpec (22% coverage):
-- ✔️ Models (96% coverage)
-- ❌ Requests (0% coverage)
+RSpec:
+- ✔️ Models (97% coverage)
+- ✔️ Requests (99% coverage)
 - ❌ Serializers (0% coverage)
 
 TODO:
