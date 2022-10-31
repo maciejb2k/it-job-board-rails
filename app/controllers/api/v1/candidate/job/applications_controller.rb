@@ -13,7 +13,7 @@ class Api::V1::Candidate::Job::ApplicationsController < ApplicationController
     @pagy, @applications = pagy(
       apply_scopes(current_api_v1_candidate.job_applications)
       .includes(eager_load_associations)
-      .order(ordering_params(params))
+      .order(ordering_params(params, 'Job::Application'))
       .all
     )
 
@@ -29,7 +29,7 @@ class Api::V1::Candidate::Job::ApplicationsController < ApplicationController
     @application_status = @application.job_application_statuses.build(application_params)
 
     if @application_status.save
-      render json: @application_status
+      render json: @application_status, status: :created
     else
       render json: { errors: @application_status.errors.messages }, status: :unprocessable_entity
     end

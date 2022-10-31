@@ -62,7 +62,7 @@ class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
 
   # Skills
   class Job::SkillSerializer < ActiveModel::Serializer
-    attributes :name, :level
+    attributes :id, :name, :level
   end
 
   # Contracts

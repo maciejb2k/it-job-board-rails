@@ -3,8 +3,8 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      mount_devise_token_auth_for 'Candidate', at: 'candidates'
-      mount_devise_token_auth_for 'Employer', at: 'employers'
+      mount_devise_token_auth_for 'Candidate', at: 'candidate'
+      mount_devise_token_auth_for 'Employer', at: 'employer'
 
       namespace :candidate do
         resource :detail

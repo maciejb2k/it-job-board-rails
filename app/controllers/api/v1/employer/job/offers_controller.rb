@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class Api::V1::Employer::Job::OffersController < ApplicationController
-  before_action :set_offer, except: %i[index create]
+  include Orderable
+
   before_action :authenticate_api_v1_employer!
+  before_action :set_offer, except: %i[index create]
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
@@ -12,10 +14,12 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
     ]
 
     @pagy, @offers = pagy(
-      apply_scopes(Job::Offer.includes(eager_load_associations)) # for n+1 problem
-        .order(ordering_params(params)) # order by 'sort' param
-        .distinct # avoid redundant records from joins
-        .all
+      apply_scopes(
+        current_api_v1_employer.job_offers.includes(eager_load_associations)
+      ) # for n+1 problem
+      .order(ordering_params(params, 'Job::Offer')) # order by 'sort' param
+      .distinct # avoid redundant records from joins
+      .all
     )
 
     render json: @offers,
@@ -23,7 +27,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
   end
 
   def show
-    render json: @offer, serializer: Api::V1::Employer::OfferSerializer
+    render json: @offer, serializer: Api::V1::Employer::Job::OfferSerializer
   end
 
   def create
@@ -60,25 +64,25 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                   :seniority,
                   :body,
                   :valid_until,
-                  :is_active,
                   :remote,
                   :travelling,
                   :ua_supported,
                   :interview_online,
                   :category_id,
                   :technology_id,
-                  :employer_id,
                   :data,
                   job_skills_attributes: %i[
                     id
                     name
                     level
                     optional
+                    _destroy
                   ],
                   job_benefits_attributes: %i[
                     id
                     group
                     name
+                    _destroy
                   ],
                   job_contracts_attributes: %i[
                     id
@@ -89,6 +93,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                     currency
                     payment_period
                     paid_vacation
+                    _destroy
                   ],
                   job_locations_attributes: %i[
                     id
@@ -98,12 +103,14 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                     zip_code
                     country
                     country_code
+                    _destroy
                   ],
                   job_company_attributes: %i[
                     name
                     logo
                     size
                     data
+                    _destroy
                   ],
                   job_contacts_attributes: %i[
                     id
@@ -111,6 +118,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                     last_name
                     email
                     phone
+                    _destroy
                   ],
                   job_languages_attributes: %i[
                     id
@@ -118,6 +126,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                     code
                     proficiency
                     required
+                    _destroy
                   ],
                   job_equipment_attributes: %i[
                     id
@@ -126,6 +135,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
                     linux
                     mac_os
                     windows
+                    _destroy
                   ])
   end
 

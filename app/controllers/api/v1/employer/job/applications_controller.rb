@@ -16,7 +16,7 @@ class Api::V1::Employer::Job::ApplicationsController < ApplicationController
         .includes(eager_load_associations)
         .where(employer: { id: current_api_v1_employer })
       )
-      .order(ordering_params(params))
+      .order(ordering_params(params, 'Job::Application'))
       .all
     )
 

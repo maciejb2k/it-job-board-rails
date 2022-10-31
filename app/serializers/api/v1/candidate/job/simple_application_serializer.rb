@@ -3,6 +3,7 @@
 class Api::V1::Candidate::Job::SimpleApplicationSerializer < ActiveModel::Serializer
   attributes :id,
              :status,
+             :created_at,
              :job_offer
 
   def status

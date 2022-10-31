@@ -34,7 +34,7 @@ class Api::V1::Job::OffersController < ApplicationController
 
     @pagy, @offers = pagy(
       apply_scopes(Job::Offer)
-        .order(ordering_params(params)) # order by 'sort' param
+        .order(ordering_params(params, 'Job::Offer')) # order by 'sort' param
         .includes(eager_load_associations) # for n+1 problem
         .distinct # avoid redundant records from joins
         .all
