@@ -499,4 +499,13 @@ RSpec.describe Job::Offer, type: :model do
       expect(offer.slug).to eq(new_title.parameterize)
     end
   end
+
+  describe '#to_param' do
+    it 'overrides default to_param method' do
+      title = 'senior ruby on rails developer'
+      offer = create(:job_offer, title:)
+
+      expect(offer.to_param).to eq("#{offer.id}-#{offer.slug}")
+    end
+  end
 end
