@@ -163,6 +163,7 @@ RSpec.describe 'Api::V1::Employer::Job::Offers', type: :request do
                 interview_online: true,
                 category_id: category.id,
                 technology_id: technology.id,
+                data: '{"links": []}',
                 job_skills_attributes: [
                   {
                     name: 'ruby',

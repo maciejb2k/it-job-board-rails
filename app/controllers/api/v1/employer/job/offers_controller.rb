@@ -49,11 +49,7 @@ class Api::V1::Employer::Job::OffersController < ApplicationController
   end
 
   def destroy
-    if @offer.destroy
-      render json: @offer
-    else
-      render json: { errors: @offer.errors.to_s }, status: :unprocessable_entity
-    end
+    render json: @offer if @offer.destroy
   end
 
   private
