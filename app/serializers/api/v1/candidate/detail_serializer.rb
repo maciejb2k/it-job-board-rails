@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::Candidates::DetailSerializer < ActiveModel::Serializer
+class Api::V1::Candidate::DetailSerializer < ActiveModel::Serializer
   attributes :id,
              :photo,
              :location,

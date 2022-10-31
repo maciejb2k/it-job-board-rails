@@ -4,7 +4,7 @@ module Orderable
   extend ActiveSupport::Concern
 
   # A list of the param names that can be used for ordering the model list
-  def ordering_params(params)
+  def ordering_params(params, model_name)
     # For example it retrieves a list of experiences in descending order of price.
     # Within a specific price, older experiences are ordered first
     #
@@ -18,7 +18,7 @@ module Orderable
     sort_order = { '+' => :asc, '-' => :desc }
     sorted_params = params[:sort].split(',')
     # controllers are namespaced, and models are not
-    model = controller_path.classify.split('::').drop(2).join('::').constantize
+    model = model_name.classify.constantize
 
     ordering = {}
     sorted_params.each do |attr|

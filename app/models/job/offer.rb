@@ -100,6 +100,7 @@ class Job::Offer < ApplicationRecord
   scope :is_interview_online, ->(value = true) { where(interview_online: value) }
   scope :is_ua_supported, ->(value = false) { where(ua_supported: value) }
   scope :by_remote, ->(remote) { where(remote:) }
+  scope :by_title, ->(title) { where('title LIKE ?', "%#{title}%") }
   scope :by_seniority, ->(seniority) { where(seniority:) }
   scope :by_travelling, ->(travelling) { where(travelling:) }
   scope :by_city, ->(cities) { left_joins(:job_locations).where('job_locations.city': cities) }

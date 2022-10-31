@@ -4,7 +4,7 @@ class Api::V1::Employer::Job::ApplicationsController < ApplicationController
   include Orderable
 
   before_action :authenticate_api_v1_employer!
-  before_action :set_application, only: %i[show]
+  before_action :set_application, only: %i[show update_status]
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
@@ -16,7 +16,7 @@ class Api::V1::Employer::Job::ApplicationsController < ApplicationController
         .includes(eager_load_associations)
         .where(employer: { id: current_api_v1_employer })
       )
-      .order(ordering_params(params))
+      .order(ordering_params(params, 'Job::Application'))
       .all
     )
 
@@ -31,13 +31,11 @@ class Api::V1::Employer::Job::ApplicationsController < ApplicationController
     @application_status = @application.job_application_statuses.build(application_params)
 
     if @application_status.save
-      render json: @application_status
+      render json: @application_status, status: :created
     else
       render json: { errors: @application_status.errors.messages }, status: :unprocessable_entity
     end
   end
-
-  def close; end
 
   private
 

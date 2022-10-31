@@ -210,6 +210,22 @@ RSpec.describe Job::Offer, type: :model do
       end
     end
 
+    # WARNING - add case sesnsitiveness
+    describe '.by_title' do
+      subject { described_class.by_title('ruby on rails') }
+
+      let(:first_job_offer) { create(:job_offer, title: 'senior ruby on rails dev') }
+      let(:second_job_offer) { create(:job_offer, title: 'java developer') }
+
+      it 'includes only job offers with given title' do
+        is_expected.to include(first_job_offer)
+      end
+
+      it 'excludes job offers  with given title' do
+        is_expected.not_to include(second_job_offer)
+      end
+    end
+
     describe '.by_remote' do
       subject { described_class.by_remote(5) }
 

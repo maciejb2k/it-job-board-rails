@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::Candidates::Job::ApplicationsController < ApplicationController
+class Api::V1::Candidate::Job::ApplicationsController < ApplicationController
   include Orderable
 
   before_action :authenticate_api_v1_candidate!
@@ -13,23 +13,23 @@ class Api::V1::Candidates::Job::ApplicationsController < ApplicationController
     @pagy, @applications = pagy(
       apply_scopes(current_api_v1_candidate.job_applications)
       .includes(eager_load_associations)
-      .order(ordering_params(params))
+      .order(ordering_params(params, 'Job::Application'))
       .all
     )
 
     render json: @applications,
-           each_serializer: Api::V1::Candidates::Job::SimpleApplicationSerializer
+           each_serializer: Api::V1::Candidate::Job::SimpleApplicationSerializer
   end
 
   def show
-    render json: @application, serializer: Api::V1::Candidates::Job::CompleteApplicationSerializer
+    render json: @application, serializer: Api::V1::Candidate::Job::CompleteApplicationSerializer
   end
 
   def resign
     @application_status = @application.job_application_statuses.build(application_params)
 
     if @application_status.save
-      render json: @application_status
+      render json: @application_status, status: :created
     else
       render json: { errors: @application_status.errors.messages }, status: :unprocessable_entity
     end

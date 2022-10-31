@@ -4,7 +4,6 @@ class Api::V1::Job::OffersController < ApplicationController
   include Orderable
 
   before_action :set_offer, except: %i[index]
-  before_action :set_signed_in_candidate_data, only: %i[apply]
   before_action :check_user_exists, only: %i[apply]
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
@@ -35,7 +34,7 @@ class Api::V1::Job::OffersController < ApplicationController
 
     @pagy, @offers = pagy(
       apply_scopes(Job::Offer)
-        .order(ordering_params(params)) # order by 'sort' param
+        .order(ordering_params(params, 'Job::Offer')) # order by 'sort' param
         .includes(eager_load_associations) # for n+1 problem
         .distinct # avoid redundant records from joins
         .all
@@ -56,10 +55,16 @@ class Api::V1::Job::OffersController < ApplicationController
       )
     )
 
+    if api_v1_candidate_signed_in?
+      @application.email = current_api_v1_candidate.email
+      @application.first_name = current_api_v1_candidate.first_name
+      @application.last_name = current_api_v1_candidate.last_name
+    end
+
     if @application.save
       render json: @application, status: :created
     else
-      render json: { errors: @application.errors.messages }
+      render json: { errors: @application.errors.messages }, status: :unprocessable_entity
     end
   end
 
@@ -86,18 +91,10 @@ class Api::V1::Job::OffersController < ApplicationController
     @offer = Job::Offer.find(params[:id])
   end
 
-  # TODO: is this a good solution?
-  def set_signed_in_candidate_data
-    return unless api_v1_candidate_signed_in?
-
-    params[:apply][:email] = current_api_v1_candidate.email
-    params[:apply][:first_name] = current_api_v1_candidate.first_name
-    params[:apply][:last_name] = current_api_v1_candidate.last_name
-  end
-
   # TODO: untested feature, probably error prone
   def check_user_exists
-    return unless Candidate.exists?(email: params[:apply][:email]) && !api_v1_candidate_signed_in?
+    return if api_v1_candidate_signed_in?
+    return unless params[:apply] && Candidate.exists?(email: params[:apply][:email])
 
     render json: {
       error: 'applying from registered e-mail requires signing in first'

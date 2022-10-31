@@ -41,3 +41,10 @@ RSpec/NestedGroups:
 
 RSpec/MultipleExpectations:
   Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+

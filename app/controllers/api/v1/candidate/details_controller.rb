@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Api::V1::Candidates::DetailsController < ApplicationController
+class Api::V1::Candidate::DetailsController < ApplicationController
   before_action :authenticate_api_v1_candidate!
   before_action :set_detail, except: %i[create]
-  before_action :check_detail_exists?, only: %i[create]
+  before_action :check_detail_exists, only: %i[create]
 
   def show
-    render json: @detail, serializer: Api::V1::Candidates::DetailSerializer
+    render json: @detail, serializer: Api::V1::Candidate::DetailSerializer
   end
 
   def create
@@ -37,7 +37,7 @@ class Api::V1::Candidates::DetailsController < ApplicationController
 
   private
 
-  def check_detail_exists?
+  def check_detail_exists
     return unless current_api_v1_candidate.candidate_detail
 
     render json: { error: 'user detail already exists' }, status: :unprocessable_entity
