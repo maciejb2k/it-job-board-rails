@@ -413,13 +413,11 @@ RSpec.describe 'Api::V1::Job::Offers', type: :request do
         expect(response.headers['Page-Items']).to eq('5')
       end
 
-      it 'returns empty page on overflowing pages' do
-        get api_v1_job_offers_path, params: { page: 9999 }
-
-        expect(response.headers['Current-Page']).to eq('9999')
-        expect(response.headers['Total-Pages']).to eq('1')
-        expect(response.headers['Page-Items']).to eq('25')
-        expect(JSON.parse(response.body)).to match_array([])
+      it 'returns 500 status on overflowing pages' do
+        expect do
+          get api_v1_job_offers_path,
+              params: { page: 9999 }
+        end.to raise_error(Pagy::OverflowError)
       end
 
       # Tu jest jescze taki babol, że mozna wpisac page: -1,
