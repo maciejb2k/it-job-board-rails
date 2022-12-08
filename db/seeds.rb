@@ -35,7 +35,7 @@ Employer.create(email: 'employer1@company.com', password: 'password')
 Employer.create(email: 'employer2@company.com', password: 'password')
 Employer.create(email: 'employer3@company.com', password: 'password')
 
-25.times do |i|
+10000.times do |i|
   params = {
     "offer": {
       "title": "Senior Ruby Developer",
@@ -45,6 +45,7 @@ Employer.create(email: 'employer3@company.com', password: 'password')
       "is_active": [true, false].sample,
       "remote": Faker::Number.between(from: 0, to: 5),
       "interview_online": true,
+      "data": "{\"links\": []}",
       "category_id": Category.find_by(name: CATEGORIES.sample).id,
       "technology_id": Technology.find_by(name: TECHNOLOGIES.sample).id,
       "employer_id": Employer.find_by(email: "employer#{rand(1..3)}@company.com").id,
@@ -82,14 +83,16 @@ Employer.create(email: 'employer3@company.com', password: 'password')
           "from": rand(3000..5000),
           "to": rand(7000..10000),
           "currency": "pln",
-          "hide_salary": [true, false].sample
+          "hide_salary": [true, false].sample,
+          "payment_period": "monthly"
         },
         {
           "employment": "uop",
           "from": rand(4000..6000),
           "to": rand(8000..14000),
           "currency": "pln",
-          "hide_salary": [true, false].sample
+          "hide_salary": [true, false].sample,
+          "payment_period": "monthly"
         }
       ],
       "job_locations_attributes": [

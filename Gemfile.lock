@@ -33,6 +33,8 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actionpack-action_caching (1.2.2)
+      actionpack (>= 4.0.0)
     actiontext (7.0.4)
       actionpack (= 7.0.4)
       activerecord (= 7.0.4)
@@ -86,6 +88,7 @@ GEM
     case_transform (0.2)
       activesupport
     concurrent-ruby (1.1.10)
+    connection_pool (2.3.0)
     crass (1.0.6)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
@@ -122,6 +125,7 @@ GEM
     has_scope (0.8.0)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
+    hiredis (0.6.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     json (2.6.2)
@@ -204,6 +208,10 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    redis (5.0.5)
+      redis-client (>= 0.9.0)
+    redis-client (0.11.2)
+      connection_pool
     regexp_parser (2.5.0)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -275,6 +283,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  actionpack-action_caching (~> 1.2.2)
   active_model_serializers (~> 0.10.0)
   activerecord_json_validator (~> 2.1.1)
   allowable (~> 1.1.0)
@@ -286,12 +295,14 @@ DEPENDENCIES
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.23.0)
   has_scope (~> 0.8.0)
+  hiredis
   json-schema (~> 2.8.1)
   pagy (~> 5.10)
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors (~> 1.1.1)
   rails (~> 7.0.3, >= 7.0.3.1)
+  redis
   rspec-rails (= 5.1.2)
   rubocop (~> 1.36.0)
   rubocop-performance (~> 1.15.0)

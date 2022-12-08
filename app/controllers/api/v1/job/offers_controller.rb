@@ -2,6 +2,7 @@
 
 class Api::V1::Job::OffersController < ApplicationController
   include Orderable
+  include ActionController::Caching
 
   before_action :set_offer, except: %i[index]
   before_action :check_user_exists, only: %i[apply]
@@ -26,12 +27,13 @@ class Api::V1::Job::OffersController < ApplicationController
   end
 
   def index
-    # names from model
+    # Eager load required associations
     eager_load_associations = %i[
       category technology job_skills_required
       job_languages job_contracts job_locations
     ]
 
+    # Create results set
     @pagy, @offers = pagy(
       apply_scopes(Job::Offer)
         .order(ordering_params(params, 'Job::Offer')) # order by 'sort' param
@@ -40,8 +42,27 @@ class Api::V1::Job::OffersController < ApplicationController
         .all
     )
 
-    render json: @offers,
-           each_serializer: Api::V1::Job::SimpleOfferSerializer
+    # Prevent caching empty result set
+    if @offers.empty?
+      result = []
+    else
+      # Look for changes in table
+      # Might be error prone, but if results are not empty, it will execute
+      last_modified = Job::Offer.order(:updated_at).last
+      # Create unique cache key for data and params set
+      cache_key = create_cache_key(last_modified, @pagy, params, current_scopes)
+
+      # Serialized objects are stored in cache
+      result = Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+        serializer = ActiveModel::Serializer::CollectionSerializer.new(
+          @offers,
+          serializer: Api::V1::Job::SimpleOfferSerializer
+        )
+        serializer.to_json
+      end
+    end
+
+    render json: result
   end
 
   def show
@@ -69,6 +90,16 @@ class Api::V1::Job::OffersController < ApplicationController
   end
 
   private
+
+  def create_cache_key(last_modified, pagy, params, current_scopes)
+    cache_hash = "
+    #{last_modified.updated_at}
+    #{pagy.page}
+    #{pagy.items}
+    #{params[:sort]}
+    #{current_scopes}".hash
+    "api/v1/job/offers/#{cache_hash}"
+  end
 
   def apply_params
     params.require(:apply).permit(
