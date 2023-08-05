@@ -48,6 +48,7 @@ Employer.create(email: 'employer3@company.com', password: 'password')
       "category_id": Category.find_by(name: CATEGORIES.sample).id,
       "technology_id": Technology.find_by(name: TECHNOLOGIES.sample).id,
       "employer_id": Employer.find_by(email: "employer#{rand(1..3)}@company.com").id,
+      "data": "{\"links\": []}",
       "job_skills_attributes": [  
           {
             "name": "Ruby",
@@ -82,14 +83,16 @@ Employer.create(email: 'employer3@company.com', password: 'password')
           "from": rand(3000..5000),
           "to": rand(7000..10000),
           "currency": "pln",
-          "hide_salary": [true, false].sample
+          "hide_salary": [true, false].sample,
+          "payment_period": "monthly"
         },
         {
           "employment": "uop",
           "from": rand(4000..6000),
           "to": rand(8000..14000),
           "currency": "pln",
-          "hide_salary": [true, false].sample
+          "hide_salary": [true, false].sample,
+          "payment_period": "monthly"
         }
       ],
       "job_locations_attributes": [
@@ -108,7 +111,7 @@ Employer.create(email: 'employer3@company.com', password: 'password')
             "zip_code": "65-788",
             "country": "Poland",
             "country_code": "PL"
-          }, 
+          },
           {
             "city": "Kraków",
             "street": "ul. Drewniana",
@@ -154,8 +157,7 @@ Employer.create(email: 'employer3@company.com', password: 'password')
       }
     }
   }
-  
-  
+
   Job::Offer.create!(params[:offer])
   p "Created ##{i} job offers"
 end

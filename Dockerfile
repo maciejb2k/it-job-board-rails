@@ -36,7 +36,7 @@ RUN echo "gem: --user-install --env-shebang --no-rdoc --no-ri" > /home/$RAILS_US
 ENV GEM_HOME $GEM_HOME
 ENV PATH $GEM_HOME/bin:$PATH
 
-RUN bundle install
+RUN bundle install --path ~/.gem
 
 COPY --chown=$RAILS_USER . .
 
