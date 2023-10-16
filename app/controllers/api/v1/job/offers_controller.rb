@@ -5,7 +5,6 @@ class Api::V1::Job::OffersController < ApplicationController
 
   before_action :set_offer, except: %i[index]
   before_action :check_user_exists, only: %i[apply]
-  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   with_options only: :index do
     has_scope :is_active, default: nil, allow_blank: true

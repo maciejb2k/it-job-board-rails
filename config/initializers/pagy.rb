@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pagy/extras/headers'
 require 'pagy/extras/overflow'
 require 'pagy/extras/items'
 
