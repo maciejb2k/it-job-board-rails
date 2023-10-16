@@ -63,6 +63,9 @@ gem 'pagy', '~> 5.10'
 # Allow certain values in strong parameters
 gem 'allowable', '~> 1.1.0'
 
+# Use environment variables
+gem 'dotenv-rails', '~> 2.8.1'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]

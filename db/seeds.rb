@@ -35,21 +35,26 @@ Employer.create(email: 'employer1@company.com', password: 'password')
 Employer.create(email: 'employer2@company.com', password: 'password')
 Employer.create(email: 'employer3@company.com', password: 'password')
 
-25.times do |i|
+titles = ["Junior", "Mid", "Senior", "Principal"]
+role = ["Developer", "Engineer", "Programmer"]
+
+250.times do |i|
+  seniority_level = Faker::Number.between(from: 1, to: 4)
+  technology = Technology.find_by(name: TECHNOLOGIES.sample)
   params = {
     "offer": {
-      "title": "Senior Ruby Developer",
-      "seniority": Faker::Number.between(from: 1, to: 4),
-      "body": "offer body",
-      "valid_until": "2023-09-29T08:12:57.262Z",
+      "title": "#{titles[seniority_level - 1]} #{technology.name} #{role.sample}".titleize,
+      "seniority": seniority_level,
+      "body": Faker::Lorem.paragraph(sentence_count: 20),
+      "valid_until": [1,2,3].sample.year.from_now,
       "is_active": [true, false].sample,
       "remote": Faker::Number.between(from: 0, to: 5),
-      "interview_online": true,
+      "interview_online": [true, false].sample,
       "category_id": Category.find_by(name: CATEGORIES.sample).id,
-      "technology_id": Technology.find_by(name: TECHNOLOGIES.sample).id,
+      "technology_id": technology.id,
       "employer_id": Employer.find_by(email: "employer#{rand(1..3)}@company.com").id,
       "data": "{\"links\": []}",
-      "job_skills_attributes": [  
+      "job_skills_attributes": [
           {
             "name": "Ruby",
             "level": 5

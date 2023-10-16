@@ -6,27 +6,9 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
-    env_file:
-      - ".env"
-  rails:
-    build:
-      context: .
-      args:
-        - RUBY_VERSION=$RUBY_VERSION
-        - RAILS_USER=$RAILS_USER
-        - GEM_HOME=$GEM_HOME
-    volumes:
-      - .:/app
-      - gems:$GEM_HOME
-    ports:
-      - "3000:3000"
-    command: bin/rails server -p 3000 -b '0.0.0.0'
-    depends_on:
-      - db
+      - "127.0.0.1:5432:5432"
     env_file:
       - ".env"
 
 volumes:
   pgdata:
-  gems:
