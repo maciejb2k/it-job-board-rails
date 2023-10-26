@@ -2,15 +2,61 @@ require 'database_cleaner'
 
 DatabaseCleaner.clean_with(:truncation)
 
-CATEGORIES = %w[backend frontend fullstack mobile testing devops embedded
-                security gaming ai big_data it_administrator agile
-                product_management project_manager business_intelligence
-                business analysis design sales marketing backoffice hr others]
+CATEGORIES = [
+  { name: 'backend', label: 'Backend' },
+  { name: 'frontend', label: 'Frontend' },
+  { name: 'fullstack', label: 'Fullstack' },
+  { name: 'mobile', label: 'Mobile' },
+  { name: 'testing', label: 'Testing' },
+  { name: 'devops', label: 'DevOps' },
+  { name: 'embedded', label: 'Embedded' },
+  { name: 'security', label: 'Security' },
+  { name: 'gaming', label: 'Gaming' },
+  { name: 'ai', label: 'AI' },
+  { name: 'big_data', label: 'Big Data' },
+  { name: 'it_administrator', label: 'IT Administrator' },
+  { name: 'agile', label: 'Agile' },
+  { name: 'product_management', label: 'Product Management' },
+  { name: 'project_manager', label: 'Project Manager' },
+  { name: 'business_intelligence', label: 'Business Intelligence' },
+  { name: 'business_analysis', label: 'Business Analysis' },
+  { name: 'design', label: 'Design' },
+  { name: 'sales', label: 'Sales' },
+  { name: 'marketing', label: 'Marketing' },
+  { name: 'backoffice', label: 'Backoffice' },
+  { name: 'hr', label: 'HR' },
+  { name: 'others', label: 'Others' }
+]
 
-TECHNOLOGIES = ['js', '.net', 'sql', 'java', 'python', 'react', 'aws', 'ts', 'html', 'angular',
-                'azure', 'php', 'c++', 'android', 'kotlin', 'vuejs', 'ios', 'golang', 'spark',
-                'scala', 'c', 'hadoop', 'ruby on rails', 'ruby', 'flutter', 'elixir', 'c#',
-                'react native']
+TECHNOLOGIES = [
+  { name: 'js', label: 'JavaScript' },
+  { name: '.net', label: '.NET' },
+  { name: 'sql', label: 'SQL' },
+  { name: 'java', label: 'Java' },
+  { name: 'python', label: 'Python' },
+  { name: 'react', label: 'React' },
+  { name: 'aws', label: 'AWS' },
+  { name: 'ts', label: 'TypeScript' },
+  { name: 'html', label: 'HTML' },
+  { name: 'angular', label: 'Angular' },
+  { name: 'azure', label: 'Azure' },
+  { name: 'php', label: 'PHP' },
+  { name: 'c++', label: 'C++' },
+  { name: 'android', label: 'Android' },
+  { name: 'kotlin', label: 'Kotlin' },
+  { name: 'vuejs', label: 'Vue.js' },
+  { name: 'ios', label: 'iOS' },
+  { name: 'golang', label: 'Golang' },
+  { name: 'spark', label: 'Spark' },
+  { name: 'scala', label: 'Scala' },
+  { name: 'c', label: 'C' },
+  { name: 'ruby on rails', label: 'Ruby on Rails' },
+  { name: 'ruby', label: 'Ruby' },
+  { name: 'flutter', label: 'Flutter' },
+  { name: 'elixir', label: 'Elixir' },
+  { name: 'c#', label: 'C#' },
+  { name: 'react native', label: 'React Native' }
+]
 
 SKILLS = ['Ruby', 'Ruby on Rails', 'RSpec', 'PostgreSQL', 'Git', 'Docker', 'AWS', 'Azure',
           'React', 'Angular', 'Vue.js', 'JavaScript', 'TypeScript', 'HTML', 'CSS', 'SASS',
@@ -29,14 +75,14 @@ SENIORITY_LEVELS = %w[Intern Junior Mid Senior]
 
 JOB_ROLES = %w[Developer Engineer Programmer]
 
-CATEGORIES.each do |name|
-  Category.create!(name:)
+CATEGORIES.each do |category|
+  Category.create!(category)
 end
 
 p "Created #{Category.count} categories"
 
-TECHNOLOGIES.each do |name|
-  Technology.create!(name:)
+TECHNOLOGIES.each do |technology|
+  Technology.create!(technology)
 end
 
 p "Created #{Technology.count} technologies"
@@ -47,7 +93,7 @@ Employer.create(email: 'employer3@company.com', password: 'password')
 
 250.times do |i|
   seniority_level = Faker::Number.between(from: 1, to: 4)
-  technology = Technology.find_by(name: TECHNOLOGIES.sample)
+  technology = Technology.find_by(name: TECHNOLOGIES.sample[:name])
   job_title =
     "#{SENIORITY_LEVELS[seniority_level - 1]} #{technology.name} #{JOB_ROLES.sample}".titleize
 
@@ -91,8 +137,9 @@ Employer.create(email: 'employer3@company.com', password: 'password')
       "is_active": [true, false].sample,
       "remote": Faker::Number.between(from: 0, to: 5),
       "interview_online": [true, false].sample,
-      "category_id": Category.find_by(name: CATEGORIES.sample).id,
+      "category_id": Category.find_by(name: CATEGORIES.sample[:name]).id,
       "technology_id": technology.id,
+      "ua_supported": [true, false].sample,
       "employer_id": Employer.find_by(email: "employer#{rand(1..3)}@company.com").id,
       "data": '{"links": []}',
       "job_skills_attributes": job_skills,

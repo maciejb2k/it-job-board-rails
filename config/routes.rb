@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'Candidate', at: 'candidate'
       mount_devise_token_auth_for 'Employer', at: 'employer'
 
+      resources :categories, only: %i[index]
+      resources :technologies, only: %i[index]
+
       namespace :candidate do
         resource :detail
         namespace :job do

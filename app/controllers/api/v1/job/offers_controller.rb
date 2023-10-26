@@ -5,6 +5,7 @@ class Api::V1::Job::OffersController < ApplicationController
 
   before_action :set_offer, except: %i[index]
   before_action :check_user_exists, only: %i[apply]
+  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   with_options only: :index do
     has_scope :is_active, default: nil, allow_blank: true
@@ -33,7 +34,7 @@ class Api::V1::Job::OffersController < ApplicationController
 
     @pagy, @offers = pagy(
       apply_scopes(Job::Offer)
-        .order(ordering_params(params, 'Job::Offer')) # order by 'sort' param
+        .order(default_sort_order) # order by 'sort' param
         .includes(eager_load_associations) # for n+1 problem
         .distinct # avoid redundant records from joins
         .all
@@ -84,6 +85,14 @@ class Api::V1::Job::OffersController < ApplicationController
       :start_time,
       :working_hours
     )
+  end
+
+  def default_sort_order
+    if params[:sort].present?
+      ordering_params(params, 'Job::Offer')
+    else
+      'created_at ASC'
+    end
   end
 
   def set_offer

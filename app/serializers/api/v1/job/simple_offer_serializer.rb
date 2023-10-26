@@ -2,6 +2,7 @@
 
 class Api::V1::Job::SimpleOfferSerializer < ActiveModel::Serializer
   attributes :id,
+             :created_at,
              :title,
              :slug,
              :seniority,
