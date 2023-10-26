@@ -17,7 +17,7 @@ class Api::V1::Job::OffersController < ApplicationController
     has_scope :by_remote
     has_scope :by_travelling
     has_scope :by_city, type: :array
-    has_scope :by_seniority
+    has_scope :by_seniority, type: :array
     has_scope :by_currency, type: :array
     has_scope :by_employment, type: :array
     has_scope :by_language, type: :array
@@ -34,7 +34,7 @@ class Api::V1::Job::OffersController < ApplicationController
 
     @pagy, @offers = pagy(
       apply_scopes(Job::Offer)
-        .order(default_sort_order) # order by 'sort' param
+        .order(ordering_params(params, 'Job::Offer')) # order by 'sort' param
         .includes(eager_load_associations) # for n+1 problem
         .distinct # avoid redundant records from joins
         .all
